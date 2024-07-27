@@ -15,8 +15,7 @@ export function NavbarHeader() {
         <div className="h-[61px] bg-pink"></div>
       </div>
       <div className="relative w-full items-center justify-center ">
-        <div className="h-[61px]"></div>
-        <Navbar className="top-14" />
+        <Navbar className="top-0" />
       </div>
     </div>
   );
@@ -33,15 +32,22 @@ function Navbar({ className }: { className?: string }) {
   const { theme, setTheme } = useTheme();
   const { scrollYProgress } = useScroll();
   const [visible, setVisible] = useState(true);
+  const [navbarDisplay, setNavbarDisplay] = useState("block"); // Add state for navbar display
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     if (typeof current === "number") {
-      if (scrollYProgress.getPrevious()! > 0.05) {
-        console.log("scroll_",scrollYProgress.getPrevious())
-        setVisible(scrollYProgress.getPrevious()! > scrollYProgress.get());
-      } else {
+      if (scrollYProgress.get() < 0.05) {
         setVisible(true);
+        setNavbarDisplay("block"); // Set display to block
+      } else {
+        if (scrollYProgress.getPrevious()! > scrollYProgress.get()) {
+          setVisible(true);
+        } else {
+          setVisible(false);
+        }
+        setNavbarDisplay("fixed");
       }
+
     }
   });
   return (
@@ -59,7 +65,7 @@ function Navbar({ className }: { className?: string }) {
           duration: 0.2,
         }}
         className={cn(
-          `fixed top-14 inset-x-0 w-full mx-auto z-50`,
+          `${navbarDisplay} top-14 inset-x-0 w-full mx-auto z-50`,
           className
         )}
       >
