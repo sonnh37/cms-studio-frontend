@@ -27,6 +27,9 @@ const config = {
     },
     extend: {
       colors: {
+        pink: {
+          DEFAULT:"#f06292"
+        },
         black: {
           DEFAULT: "#000",
           100: "#000319",

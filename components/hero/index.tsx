@@ -1,5 +1,6 @@
+"use client"
 import React from "react";
-import { Spotlight } from "./ui/Spotlight";
+import { Spotlight } from "../ui/Spotlight";
 
 const Hero = () => {
     return (
