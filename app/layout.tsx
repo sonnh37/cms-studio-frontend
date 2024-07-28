@@ -15,7 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning={true} className="!scroll-smooth" lang="en">
-      <head />
+      <head>
+      <script src="https://kit.fontawesome.com/b08cef85f4.js" crossOrigin="anonymous"></script>
+      </head>
       <body>
       <SessionProvider>
             <NextUIProvider>

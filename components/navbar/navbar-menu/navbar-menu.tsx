@@ -28,11 +28,11 @@ export const MenuItem = ({
     return (
         <motion.div  onMouseEnter={() => setActive(item)}
         
-        className="relative py-2 px-3 hover:opacity-100 hover:inset-0 hover:transform
-                hover:bg-gradient-to-b hover:from-[#464d55] hover:to-[#25292e] hover:scale-105 hover:rounded-2xl  ">
+        className="relative hover:font-medium dark:hover:text-white py-2 px-3 hover:opacity-100 hover:inset-0 hover:transform
+                hover:bg-gradient-to-b hover:scale-105 hover:rounded-sm  ">
             <motion.p
-                transition={{ duration: 0.3 }}
-                className="cursor-pointer text-light hover:text-light dark:text-dark"
+                transition={{ duration: 0.3 }}  
+                className="cursor-pointer "
             >
                 {item}
             </motion.p>
@@ -77,9 +77,10 @@ export const Menu = ({
     children: React.ReactNode;
 }) => {
     return (
+        
         <nav
             onMouseLeave={() => setActive(null)} // resets the state
-            className="relative boder border-transparent border-stroke bg-white/80 backdrop-blur-[5px] dark:border-dark-3/20 dark:bg-[#111014] shadow-input flex flex-row items-center justify-center space-x-4 py-2 px-3"
+            className="relative boder border-transparent border-stroke bg-white/80 backdrop-blur-[5px] dark:border-dark-3/20 dark:bg-[#111014] shadow-input flex flex-row items-center justify-center space-x-4 py-2"
         >
             {children}
         </nav>
@@ -122,7 +123,6 @@ export const HoveredLink = ({ children, ...rest }: any) => {
     return (
         <Link
             {...rest}
-            className="text-neutral-700 dark:text-neutral-200 hover:text-black "
         >
             {children}
         </Link>

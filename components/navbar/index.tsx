@@ -7,15 +7,55 @@ import { useTheme } from "next-themes";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Input } from "@nextui-org/react";
+import { SearchIcon } from "../ui/SearchIcon";
 
 export function NavbarHeader() {
   return (
-    <div>
+    <div className="">
       <div className="w-full items-center justify-center ">
-        <div className="h-[61px] bg-pink"></div>
+        <div className="h-[40px] text-white bg-pink relative flex justify-between items-center flex-row overflow-hidden
+   mx-auto sm:px-28 px-5">
+          <div className="flex space-x-4 flex-row">
+            <div>
+              <i className="fa-solid fa-phone"></i> 0908145344
+            </div>
+            <div>
+              <i className="fa-regular fa-envelope"></i> nhumystudio@gmail.com
+            </div>
+          </div>
+          <div className="flex space-x-4 flex-row">
+            Chat with me
+          </div>
+          <div className="flex space-x-4 justify-between items-center flex-row">
+            <div>
+              <a href="">ABOUT NHUMY</a>
+            </div>
+            <div>|</div>
+            <div>
+              <a href="">Liên hệ</a>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="relative w-full items-center justify-center ">
+      <div className="relative w-full flex justify-between items-center flex-row 
+   mx-auto sm:px-28 px-5">
+        <Link href="/">
+          <img src="/images/Nhu-My-Studio.png" width={60} height={60} alt="logo" />
+        </Link>
         <Navbar className="top-0" />
+        <Input
+          classNames={{
+            base: "max-w-full sm:max-w-[10rem] h-10",
+            mainWrapper: "h-full",
+            input: "text-small",
+            inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+          }}
+          placeholder="Type to search..."
+          size="sm"
+          startContent={<SearchIcon size={18} />}
+          type="search"
+        />
       </div>
     </div>
   );
@@ -36,7 +76,8 @@ function Navbar({ className }: { className?: string }) {
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     if (typeof current === "number") {
-      if (scrollYProgress.get() < 0.05) {
+      console.log("display", navbarDisplay)
+      if (scrollYProgress.get() < 0.1) {
         setVisible(true);
         setNavbarDisplay("block"); // Set display to block
       } else {
@@ -47,6 +88,7 @@ function Navbar({ className }: { className?: string }) {
         }
         setNavbarDisplay("fixed");
       }
+      console.log("display", navbarDisplay)
 
     }
   });
@@ -54,12 +96,14 @@ function Navbar({ className }: { className?: string }) {
     <AnimatePresence mode="wait">
       <motion.div
         initial={{
-          opacity: 1,
-          y: -100,
+          // opacity: 1,
+          // y: -100,
+          display: navbarDisplay
         }}
         animate={{
           y: visible ? 0 : -100,
           opacity: visible ? 1 : 0,
+          display: navbarDisplay
         }}
         transition={{
           duration: 0.2,
@@ -71,16 +115,11 @@ function Navbar({ className }: { className?: string }) {
       >
 
         <Menu setActive={setActive}>
-          <Link href="/">
-            <img src="/images/Nhu-My-Studio.png" width={45} height={45} alt="logo" />
-          </Link>
-          <MenuItem setActive={setActive} active={null} item="Home">
+
+          <MenuItem setActive={setActive} active={null} item="TRANG CHỦ">
 
           </MenuItem>
-          <MenuItem setActive={setActive} active={null} item="About">
-
-          </MenuItem>
-          <MenuItem setActive={setActive} active={active} item="Courses">
+          <MenuItem setActive={setActive} active={null} item="DỊCH VỤ">
             <div className="flex flex-col space-y-4 text-sm">
               <HoveredLink href="/web-dev">Web Development</HoveredLink>
               <HoveredLink href="/interface-design">Interface Design</HoveredLink>
@@ -88,7 +127,7 @@ function Navbar({ className }: { className?: string }) {
               <HoveredLink href="/branding">Branding</HoveredLink>
             </div>
           </MenuItem>
-          <MenuItem setActive={setActive} active={active} item="Partners">
+          <MenuItem setActive={setActive} active={active} item="BẢNG GIÁ">
             <div className="  text-sm grid grid-cols-2 gap-10 p-4">
               <ProductItem
                 title="Algochurn"
@@ -116,6 +155,15 @@ function Navbar({ className }: { className?: string }) {
               />
             </div>
           </MenuItem>
+          <MenuItem setActive={setActive} active={active} item="ALBUM">
+            <div className="flex flex-col space-y-4 text-sm">
+              <HoveredLink href="/web-dev">Web Development</HoveredLink>
+              <HoveredLink href="/interface-design">Interface Design</HoveredLink>
+              <HoveredLink href="/seo">Search Engine Optimization</HoveredLink>
+              <HoveredLink href="/branding">Branding</HoveredLink>
+            </div>
+          </MenuItem>
+          
           <MenuItem setActive={setActive} active={active} item="Pricing">
             <div className="flex flex-col space-y-4 text-sm">
               <HoveredLink href="/hobby">Hobby</HoveredLink>
