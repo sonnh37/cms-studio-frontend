@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -25,11 +25,12 @@ export const MenuItem = ({
     item: string;
     children?: React.ReactNode;
 }) => {
+    const [hovered, setHovered] = useState(false);
     return (
-        <motion.div  onMouseEnter={() => setActive(item)}
+        <motion.div  onMouseEnter={() => setActive(item)} onHoverStart={() => setHovered(true)} onHoverEnd={() => setHovered(false)}
         
-        className="relative hover:font-medium dark:hover:text-white py-2 px-3 hover:opacity-100 hover:inset-0 hover:transform
-                hover:bg-gradient-to-b hover:scale-105 hover:rounded-sm  ">
+        className="relative dark:hover:text-white py-2 px-3 hover:opacity-100 hover:inset-0 hover:transform
+                hover:bg-gradient-to-b  hover:rounded-sm  ">
             <motion.p
                 transition={{ duration: 0.3 }}  
                 className="cursor-pointer "
@@ -65,9 +66,12 @@ export const MenuItem = ({
                     )}
                 </motion.div>
             )}
+            <div className={`border-t-2 border-black-100 dark:border-white-100 rounded-xl transition-all duration-300 ease-in-out ${hovered ? 'w-10/12' : 'w-0'}`}></div>
         </motion.div>
     );
 };
+
+
 
 export const Menu = ({
     setActive,
@@ -76,11 +80,12 @@ export const Menu = ({
     setActive: (item: string | null) => void;
     children: React.ReactNode;
 }) => {
+   
     return (
         
         <nav
             onMouseLeave={() => setActive(null)} // resets the state
-            className="relative boder border-transparent border-stroke bg-white/80 backdrop-blur-[5px] dark:border-dark-3/20 dark:bg-[#111014] shadow-input flex flex-row items-center justify-center space-x-4 py-2"
+            className="relative boder border-transparent border-stroke shadow-input flex flex-row items-center justify-center space-x-4 py-2 bg-background"
         >
             {children}
         </nav>

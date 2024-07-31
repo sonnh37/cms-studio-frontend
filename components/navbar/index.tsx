@@ -8,7 +8,7 @@ import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Input } from "@nextui-org/react";
-import { SearchIcon } from "../ui/SearchIcon";
+import { SearchIcon } from "../ui/search-icon";
 
 export function NavbarHeader() {
   const { theme, setTheme } = useTheme();
@@ -16,47 +16,40 @@ export function NavbarHeader() {
   const pathUrl = usePathname();
   return (
     <div className="">
-      <div className="w-full items-center justify-center ">
-        <div className="h-[40px] text-white bg-pink relative flex justify-between items-center flex-row overflow-hidden
-   mx-auto sm:px-28 px-5">
-          <div className="flex space-x-4 flex-row">
-            <div>
-              <i className="fa-solid fa-phone"></i> 0908145344
-            </div>
-            <div>
-              <i className="fa-regular fa-envelope"></i> nhumystudio@gmail.com
-            </div>
+      <div className="border-b-1 h-[40px]  relative flex justify-between items-center flex-row overflow-hidden sm:px-52 px-5">
+        <div className="flex space-x-4 flex-row">
+          <div>
+            <i className="fa-solid fa-phone"></i> 0908145344
           </div>
-          <div className="flex space-x-4 flex-row">
-            Chat with me
-          </div>
-          <div className="flex space-x-4 justify-between items-center flex-row">
-            <div>
-              <a href="">ABOUT NHUMY</a>
-            </div>
-            <div>|</div>
-            <div>
-              <a href="">Liên hệ</a>
-            </div>
+          <div>
+            <i className="fa-regular fa-envelope"></i> nhumystudio@gmail.com
           </div>
         </div>
-      </div>
-      <div className="relative w-full flex justify-between items-center flex-row 
-   mx-auto sm:px-28 px-5">
-        <Link href="/">
-          <img src="/images/Nhu-My-Studio.png" width={60} height={60} alt="logo" />
-        </Link>
-        <Navbar className="top-0" />
-        <div className="space-x-3 flex flex-row justify-between items-center">
+        <div className="flex space-x-4 flex-row">
+          Chat with me
+        </div>
+        <div className="flex space-x-4 justify-between items-center flex-row">
+          <div>
+            <a href="">ABOUT NHUMY</a>
+          </div>
+          <div>|</div>
+          <div>
+            <a href="">Liên hệ</a>
+          </div>
+
+        </div>
+        <div className="space-x-4 flex flex-row justify-between items-center">
           <Input
             classNames={{
               base: "max-w-full sm:max-w-[10rem] h-10",
               mainWrapper: "h-full",
-              input: "text-small",
-              inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+              input: "text-small ",
+              inputWrapper: "h-full font-normal bg-default-400/20 dark:bg-default-500/20",
             }}
+            color="default"
             placeholder="Type to search..."
             size="sm"
+            radius="none"
             startContent={<SearchIcon size={18} />}
             type="search"
           />
@@ -86,6 +79,10 @@ export function NavbarHeader() {
           </button>
         </div>
       </div>
+      <div className="border-b-1 relative flex justify-between items-center flex-row sm:px-52 px-5
+   ">
+        <Navbar className="top-0" />
+      </div>
     </div>
   );
 }
@@ -97,6 +94,9 @@ function Navbar({ className }: { className?: string }) {
   const [navbarOpen, setNavbarOpen] = useState(false);
   const navbarToggleHandler = () => setNavbarOpen(!navbarOpen);
 
+  const { theme } = useTheme();
+
+  const logoSrc = theme === 'dark' ? '/images/studio-dark-edit.png' : '/images/studio-light-edit.png';
 
 
   const { scrollYProgress } = useScroll();
@@ -156,6 +156,9 @@ function Navbar({ className }: { className?: string }) {
               <HoveredLink href="/enterprise">Enterprise</HoveredLink>
             </div>
           </MenuItem>
+          <Link href="/">
+            <img src={logoSrc} width={'200'} height={''} alt="logo" />
+          </Link>
           <MenuItem setActive={setActive} active={active} item="ALBUM">
             <div className="  text-sm grid grid-cols-2 gap-10 p-4">
               <ProductItem
