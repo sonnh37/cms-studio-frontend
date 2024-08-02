@@ -8,8 +8,8 @@ import "./navbar-menu.css"
 const transition = {
     type: "spring",
     mass: 0.5,
-    damping: 11.5,
-    stiffness: 100,
+    damping: 8,
+    stiffness: 150,
     restDelta: 0.001,
     restSpeed: 0.001,
 };
@@ -29,7 +29,7 @@ export const MenuItem = ({
     return (
         <motion.div  onMouseEnter={() => setActive(item)} onHoverStart={() => setHovered(true)} onHoverEnd={() => setHovered(false)}
         
-        className="relative dark:hover:text-white py-2 px-3 hover:opacity-100 hover:inset-0 hover:transform
+        className="relative dark:hover:text-white py-2 px-3 hover:text-black hover:opacity-100 hover:inset-0 hover:transform
                 hover:bg-gradient-to-b  hover:rounded-sm  ">
             <motion.p
                 transition={{ duration: 0.3 }}  
@@ -113,7 +113,7 @@ export const ProductItem = ({
                 className="flex-shrink-0 rounded-md shadow-2xl"
             />
             <div>
-                <h4 className="text-xl font-bold mb-1 text-black dark:text-white">
+                <h4 className="text-medium font-bold mb-1 text-black dark:text-white block truncate max-w-60">
                     {title}
                 </h4>
                 <p className="text-neutral-700 text-sm max-w-[10rem] dark:text-neutral-300">

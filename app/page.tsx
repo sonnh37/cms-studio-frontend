@@ -2,6 +2,7 @@
 import { About } from "@/components/about";
 import { Album } from "@/components/album";
 import { Clothes } from "@/components/clothes";
+import Contact from "@/components/contact";
 import { Features } from "@/components/feature";
 import { Hero } from "@/components/hero";
 import Image from "next/image";
@@ -9,15 +10,16 @@ import Image from "next/image";
 export default function HomePage() {
   // Home page
   return (
-   <main className="relative flex justify-center items-center flex-col overflow-hidden
+    <main className="relative flex justify-center items-center flex-col overflow-hidden
    ">
-    <div className="w-full">
-      <Hero/>
-      <Features/>
-      <About/>
-      <Album/>
-      <Clothes/>
-    </div>
-   </main>
+      <div className="w-full">
+        <Hero />
+        <Features />
+
+        <Album />
+        <Clothes />
+        <Contact />
+      </div>
+    </main>
   );
 }

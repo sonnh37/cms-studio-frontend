@@ -33,6 +33,18 @@ export const ParallaxScroll = ({
       className={cn("h-[40rem] items-start overflow-y-auto w-full", className)}
       ref={gridRef}
     >
+      <div className="relative z-20 py-10 max-w-7xl mx-auto">
+        <div className="px-8">
+          <h4 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black dark:text-white">
+            Album 
+          </h4>
+
+          <p className="text-sm lg:text-base  max-w-2xl  my-4 mx-auto text-neutral-500 text-center font-normal dark:text-neutral-300">
+          ĐA SỐ KHÁCH HÀNG NMS LÀ CẶP ĐÔI CÁC TRẺ CÓ PHONG CÁCH THẨM MỸ HIỆN ĐẠI.
+          </p>
+        </div>
+      </div>
+
       <div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start max-w-7xl mx-auto gap-5 py-20"
         ref={gridRef}
