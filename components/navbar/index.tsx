@@ -9,6 +9,8 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Input } from "@nextui-org/react";
 import { SearchIcon } from "../ui/search-icon";
+import axios from "axios";
+import { Photo } from "@/types/photo";
 
 // Define the type for the images
 type InstagramImage = {
@@ -101,28 +103,17 @@ function Navbar({ className }: { className?: string }) {
   const { scrollYProgress } = useScroll();
   const [visible, setVisible] = useState(true);
   const [navbarDisplay, setNavbarDisplay] = useState("block");
-  const [images, setImages] = useState<InstagramImage[]>([]);
+  const [images, setImages] = useState<Photo[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = `https://graph.instagram.com/me/media?fields=id,caption,media_url,timestamp,media_type,permalink&access_token=${process.env.NEXT_PUBLIC_INSTAGRAM_KEY}`;
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Failed to fetch Instagram images");
-        }
-        const data = await response.json();
-        const imageUrls: InstagramImage[] = data.data.slice(0, 4).map(
-          (item: { media_url: string; caption?: string; permalink: string; timestamp: string }) => ({
-            src: item.media_url,
-            title: item.caption || "Instagram Photo",
-            href: item.permalink,
-            description: `Posted on: ${new Date(item.timestamp).toLocaleDateString()}`,
-          })
-        );
-        setImages(imageUrls);
+        const response = await axios.get('https://localhost:7192/photo-management/photos');
+        // Assuming the response data contains a list of Photo objects
+        const photos: Photo[] = response.data.results;
+        setImages(photos);
       } catch (error) {
-        console.error("Error fetching Instagram images:", error);
+        console.error('Failed to fetch images:', error);
       }
     };
 
@@ -144,6 +135,7 @@ function Navbar({ className }: { className?: string }) {
       }
     }
   });
+  
 
   return (
     <AnimatePresence mode="wait">
@@ -181,10 +173,10 @@ function Navbar({ className }: { className?: string }) {
               {images.map((image, index) => (
                 <ProductItem
                   key={index}
-                  title={image.title}
-                  href={image.href}
-                  src={image.src}
-                  description={image.description}
+                  title={image.title as string}
+                  href={image.href as string}
+                  src={image.src as string}
+                  description={image.description as string}
                 />
               ))}
             </div>

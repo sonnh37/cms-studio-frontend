@@ -1,22 +1,29 @@
+// Album.tsx
 "use client";
 import { useEffect, useState } from "react";
 import { ParallaxScroll } from "../ui/parallax-scroll";
+import axios from "axios";
+import { Photo } from "@/types/photo";
 
 export function Album() {
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<Photo[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const url = `https://graph.instagram.com/me/media?fields=id,caption,media_url,timestamp,media_type,permalink&access_token=${process.env.NEXT_PUBLIC_INSTAGRAM_KEY}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      const imageUrls = data.data.map((item: { media_url: any; }) => item.media_url);
-      setImages(imageUrls);
+      try {
+        const response = await axios.get('https://localhost:7192/photo-management/photos');
+        // Assuming the response data contains a list of Photo objects
+        const photos: Photo[] = response.data.results;
+        
+        setImages(photos);
+        console.log("album",images.map(photo => photo.src as string))
+      } catch (error) {
+        console.error('Failed to fetch images:', error);
+      }
     };
 
     fetchData();
   }, []);
-  return <ParallaxScroll images={images} />;
+
+  return <ParallaxScroll images={images.map(photo => photo.src as string)} />;
 }
-
-
