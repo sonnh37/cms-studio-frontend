@@ -1,7 +1,7 @@
 "use client";
 import { About } from "@/components/about";
-import { Album } from "@/components/album";
-import { Clothes } from "@/components/clothes";
+import { AlbumComponent } from "@/components/album";
+import { OutfitComponent } from "@/components/outfit";
 import Contact from "@/components/contact";
 import { Features } from "@/components/feature";
 import { Hero } from "@/components/hero";
@@ -14,11 +14,11 @@ export default function HomePage() {
    ">
       <div className="w-full">
         <Hero />
-        <Features />
-
-        <Album />
-        <Clothes />
+        <div id="first-section"><Features /></div>
+        <AlbumComponent />
+        <OutfitComponent />
         <Contact />
+       
       </div>
     </main>
   );

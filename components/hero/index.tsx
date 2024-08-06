@@ -60,7 +60,8 @@ export function Hero() {
   ];
 
   return (
-    <ImagesSlider className="h-[40rem]" images={images}>
+    <div className="pb-10">
+      <ImagesSlider className="h-[40rem]" images={images}>
       <motion.div
         initial={{
           opacity: 0,
@@ -75,9 +76,6 @@ export function Hero() {
         }}
         className="z-50 flex flex-col justify-center items-center"
       >
-        {/* <motion.p className="font-bold text-xl md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 py-4">
-          The hero section slideshow <br /> nobody asked for
-        </motion.p> */}
         <div className="flex flex-row items-center justify-center w-full">
           <AnimatedTooltip items={people} />
         </div>
@@ -85,5 +83,6 @@ export function Hero() {
         <BookingModal />
       </motion.div>
     </ImagesSlider>
+    </div>
   );
 }

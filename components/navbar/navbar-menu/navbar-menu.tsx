@@ -17,26 +17,31 @@ const transition = {
 export const MenuItem = ({
     setActive,
     active,
+    href = "#",
     item,
     children,
-}: {
-    setActive: (item: string) => void;
-    active: string | null;
-    item: string;
-    children?: React.ReactNode;
-}) => {
+ }: {
+        setActive: (item: string) => void;
+        active: string | null;
+        href: string;
+        item: string;
+        children?: React.ReactNode;
+    }) => {
     const [hovered, setHovered] = useState(false);
     return (
-        <motion.div  onMouseEnter={() => setActive(item)} onHoverStart={() => setHovered(true)} onHoverEnd={() => setHovered(false)}
-        
-        className="relative dark:hover:text-white py-2 px-3 hover:text-black hover:opacity-100 hover:inset-0 hover:transform
+        <motion.div onMouseEnter={() => setActive(item)} onHoverStart={() => setHovered(true)} onHoverEnd={() => setHovered(false)}
+
+            className="relative dark:hover:text-white py-2 px-3 hover:text-black hover:opacity-100 hover:inset-0 hover:transform
                 hover:bg-gradient-to-b  hover:rounded-sm  ">
+            <Link href={href}>
             <motion.p
-                transition={{ duration: 0.3 }}  
+                transition={{ duration: 0.3 }}
                 className="cursor-pointer "
             >
-                {item}
+                 
+                    {item}
             </motion.p>
+            </Link>
             {active !== null && (
                 <motion.div
                     initial={{ opacity: 0, scale: 0.85, y: 10 }}
@@ -44,7 +49,7 @@ export const MenuItem = ({
                     exit={{
                         opacity: 0,
                         transition: { duration: 0.15, delay: 0.2 },
-                      }}
+                    }}
                     transition={transition}
                 >
                     {active === item && (
@@ -80,9 +85,9 @@ export const Menu = ({
     setActive: (item: string | null) => void;
     children: React.ReactNode;
 }) => {
-   
+
     return (
-        
+
         <nav
             onMouseLeave={() => setActive(null)} // resets the state
             className="relative boder border-transparent border-stroke shadow-input flex flex-row items-center justify-center space-x-4 py-2 bg-background"

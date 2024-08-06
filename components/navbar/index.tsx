@@ -11,6 +11,7 @@ import { Input } from "@nextui-org/react";
 import { SearchIcon } from "../ui/search-icon";
 import axios from "axios";
 import { Photo } from "@/types/photo";
+import { Album } from "@/types/album";
 
 // Define the type for the images
 type InstagramImage = {
@@ -87,7 +88,8 @@ export function NavbarHeader() {
         </div>
       </div>
       <div className="border-b-1 relative flex justify-between items-center flex-row sm:px-52 px-5">
-        <Navbar className="top-0" />
+        <div className="h-[73.84px]"></div>
+        <Navbar className="top-0 " />
       </div>
     </div>
   );
@@ -102,16 +104,17 @@ function Navbar({ className }: { className?: string }) {
   const logoSrc = theme === "dark" ? "/images/studio-dark-edit.png" : "/images/studio-light-edit.png";
   const { scrollYProgress } = useScroll();
   const [visible, setVisible] = useState(true);
-  const [navbarDisplay, setNavbarDisplay] = useState("block");
-  const [images, setImages] = useState<Photo[]>([]);
+  const [navbarDisplay, setNavbarDisplay] = useState("absolute");
+  const [images, setImages] = useState<Album[]>([]);
+  const pathUrl = usePathname();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://localhost:7192/photo-management/photos');
-        // Assuming the response data contains a list of Photo objects
-        const photos: Photo[] = response.data.results;
-        setImages(photos);
+        const response = await axios.get('https://localhost:7192/album-management/albums');
+        const albums: Album[] = response.data.results
+
+        setImages(albums);
       } catch (error) {
         console.error('Failed to fetch images:', error);
       }
@@ -121,21 +124,24 @@ function Navbar({ className }: { className?: string }) {
   }, []);
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
-    if (typeof current === "number") {
+    if (pathUrl === "/" && typeof current === "number") {
       if (scrollYProgress.get() < 0.1) {
         setVisible(true);
-        setNavbarDisplay("block");
+        setNavbarDisplay("absolute");
       } else {
         if (scrollYProgress.getPrevious()! > scrollYProgress.get()) {
           setVisible(true);
+          setNavbarDisplay("fixed");
         } else {
           setVisible(false);
         }
-        setNavbarDisplay("fixed");
       }
+    } else {
+      setVisible(true);
+      setNavbarDisplay("absolute");
     }
   });
-  
+
 
   return (
     <AnimatePresence mode="wait">
@@ -154,8 +160,8 @@ function Navbar({ className }: { className?: string }) {
         className={cn(`${navbarDisplay} top-14 inset-x-0 w-full mx-auto z-50`, className)}
       >
         <Menu setActive={setActive}>
-          <MenuItem setActive={setActive} active={null} item="Trang chủ"></MenuItem>
-          <MenuItem setActive={setActive} active={active} item="Dịch vụ">
+          <MenuItem href="/" setActive={setActive} active={null} item="Trang chủ"></MenuItem>
+          <MenuItem href={"/#first-section"} setActive={setActive} active={active} item="Dịch vụ">
             <div className="flex flex-col space-y-4 text-sm">
               <HoveredLink href="/hobby">Bộ ảnh trọn gói</HoveredLink>
               <HoveredLink href="/individual">Trang điểm</HoveredLink>
@@ -168,25 +174,24 @@ function Navbar({ className }: { className?: string }) {
           <Link href="/">
             <img src={logoSrc} width={"200"} height={""} alt="logo" />
           </Link>
-          <MenuItem setActive={setActive} active={active} item="Album">
+          <MenuItem href="/album" setActive={setActive} active={active} item="Album">
             <div className="text-sm grid grid-cols-2 gap-10 p-4">
               {images.map((image, index) => (
                 <ProductItem
                   key={index}
                   title={image.title as string}
-                  href={image.href as string}
-                  src={image.src as string}
+                  href={""}
+                  src={image.background as string}
                   description={image.description as string}
                 />
               ))}
             </div>
           </MenuItem>
-          <MenuItem setActive={setActive} active={active} item="Trang phục">
+          <MenuItem href="/outfit" setActive={setActive} active={active} item="Trang phục">
             <div className="flex flex-col space-y-4 text-sm">
-              <HoveredLink href="/web-dev">Web Development</HoveredLink>
-              <HoveredLink href="/interface-design">Interface Design</HoveredLink>
-              <HoveredLink href="/seo">Search Engine Optimization</HoveredLink>
-              <HoveredLink href="/branding">Branding</HoveredLink>
+              <HoveredLink href="/outfit/vay-cuoi">Váy cưới</HoveredLink>
+              <HoveredLink href="/outfit/vest">Vest</HoveredLink>
+              <HoveredLink href="/outfit/ao-dai">Áo dài</HoveredLink>
             </div>
           </MenuItem>
         </Menu>

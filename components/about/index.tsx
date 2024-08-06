@@ -2,7 +2,6 @@
 import { motion } from "framer-motion";
 import { HeroHighlight, Highlight } from "../ui/hero-highlight";
 import { AnimatedTooltip } from "../ui/animated-tooltip";
-import { Album } from "../album";
 export function About() {
   return (
     <HeroHighlight>
