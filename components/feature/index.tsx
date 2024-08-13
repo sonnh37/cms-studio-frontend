@@ -1,15 +1,59 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
+import { Service } from "@/types/service";
+import axios from "axios";
+
+export interface CardToMapService {
+  category: string,
+  title: string,
+  src: string,
+  content: React.JSX.Element,
+  description: string,
+}
 
 export function Features() {
-  const cards = data.map((card, index) => (
+
+  const [services, setServices] = useState<Service[]>([]);
+  const [cards_, setCards] = useState<CardToMapService[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://localhost:7192/service-management/services');
+        const services: Service[] = response.data.results
+
+        setServices(services);
+
+        const cardToMapServices = services.map(service => {
+          return {
+            category: service.type || '',
+            title: service.title || '',
+            src: service.src || '',
+            content: <div>{service.description}</div>,
+            description: service.description || ''
+          } as CardToMapService;
+        });
+
+        setCards(cardToMapServices);
+        
+      } catch (error) {
+        console.error('Failed to fetch images:', error);
+      }
+    };
+
+    fetchData();
+
+
+  }, []);
+
+  const cards = cards_.map((card, index) => (
     <Card key={card.src} card={card} index={index} />
   ));
 
   return (
-    <div  className="w-full h-full">
+    <div className="w-full h-full">
       <h2 className="max-w-7xl pl-4 mx-auto text-xl md:text-5xl font-bold text-neutral-800 dark:text-neutral-200 font-sans">
         Hãy đến với các dịch vụ của chúng tôi.
       </h2>
@@ -23,7 +67,7 @@ const DummyContent = () => {
     <>
       {[...new Array(3).fill(1)].map((_, index) => {
         return (
-          <div 
+          <div
             key={"dummy-content" + index}
             className="bg-[#F5F5F7] dark:bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4"
           >
@@ -50,43 +94,5 @@ const DummyContent = () => {
   );
 };
 
-const data = [
-  {
-    category: "Studio",
-    title: "Bộ ảnh trọn gói",
-    src: "https://images.unsplash.com/photo-1511984804822-e16ba72f5848?q=80&w=2048&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    content: <DummyContent />,
-  },
-  {
-    category: "Beauty",
-    title: "Make up",
-    src: "/images/mrs.thy.jpg",
-    content: <DummyContent />,
-  },
-  {
-    category: "Beauty",
-    title: "Làm tóc",
-    src: "/images/make-hair.jpg",
-    content: <DummyContent />,
-  },
-  {
-    category: "Chụp ảnh",
-    title: "Chụp studio-portrait-beauty-profile",
-    src: "/images/studio.jpg",
-    content: <DummyContent />,
-  },
 
-  {
-    category: "Chụp ảnh",
-    title: "Chụp concept",
-    src: "/images/concept.jpg",
-    content: <DummyContent />,
-  },
-  {
-    category: "Chụp ảnh",
-    title: "Chụp ngoại cảnh",
-    src: "/images/outside.jpg",
-    content: <DummyContent />,
-  },
 
-];

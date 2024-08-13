@@ -12,6 +12,7 @@ import { SearchIcon } from "../ui/search-icon";
 import axios from "axios";
 import { Photo } from "@/types/photo";
 import { Album } from "@/types/album";
+import { Service } from "@/types/service";
 
 // Define the type for the images
 type InstagramImage = {
@@ -105,22 +106,37 @@ function Navbar({ className }: { className?: string }) {
   const { scrollYProgress } = useScroll();
   const [visible, setVisible] = useState(true);
   const [navbarDisplay, setNavbarDisplay] = useState("absolute");
-  const [images, setImages] = useState<Album[]>([]);
+  const [albums, setAlbums] = useState<Album[]>([]);
   const pathUrl = usePathname();
 
+  const [services, setServices] = useState<Service[]>([]);
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAlbum = async () => {
       try {
         const response = await axios.get('https://localhost:7192/album-management/albums');
         const albums: Album[] = response.data.results
 
-        setImages(albums);
+        setAlbums(albums);
       } catch (error) {
         console.error('Failed to fetch images:', error);
       }
     };
 
-    fetchData();
+    const fetchService = async () => {
+      try {
+        const response = await axios.get('https://localhost:7192/service-management/services');
+        const services: Service[] = response.data.results
+
+        setServices(services);
+      } catch (error) {
+        console.error('Failed to fetch images:', error);
+      }
+    };
+
+    fetchAlbum();
+    fetchService();
+
   }, []);
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
@@ -163,12 +179,30 @@ function Navbar({ className }: { className?: string }) {
           <MenuItem href="/" setActive={setActive} active={null} item="Trang chủ"></MenuItem>
           <MenuItem href={"/#first-section"} setActive={setActive} active={active} item="Dịch vụ">
             <div className="flex flex-col space-y-4 text-sm">
-              <HoveredLink href="/hobby">Bộ ảnh trọn gói</HoveredLink>
-              <HoveredLink href="/individual">Trang điểm</HoveredLink>
-              <HoveredLink href="/team">Làm tóc</HoveredLink>
-              <HoveredLink href="/enterprise">Chụp studio-portrait-beauty-profile</HoveredLink>
-              <HoveredLink href="/enterprise">Chụp concept</HoveredLink>
-              <HoveredLink href="/enterprise">Chụp ngoại cảnh</HoveredLink>
+              {services.map((service, index) => {
+                // Hàm chuyển đổi tiêu đề thành dạng slug
+                const toSlug = (title: string) => {
+                  return title
+                    .toLowerCase()
+                    .normalize('NFD') // chuẩn hóa Unicode
+                    .replace(/[\u0300-\u036f]/g, '') // loại bỏ dấu
+                    .replace(/[^a-z0-9 ]/g, '') // loại bỏ ký tự đặc biệt
+                    .replace(/\s+/g, '-') // thay thế khoảng trắng bằng dấu gạch ngang
+                    .trim(); // loại bỏ khoảng trắng đầu và cuối
+                };
+
+                // Tạo slug từ tiêu đề
+                const slug = toSlug(service.title || '');
+
+                // Nếu tiêu đề là "Bộ ảnh trọn gói", chuyển thành "bo-anh-tron-goi"
+                const path = slug === 'bo-anh-tron-goi' ? slug : slug;
+
+                return (
+                  <HoveredLink key={index} href={`/${path}`}>
+                    {service.title}
+                  </HoveredLink>
+                );
+              })}
             </div>
           </MenuItem>
           <Link href="/">
@@ -176,7 +210,7 @@ function Navbar({ className }: { className?: string }) {
           </Link>
           <MenuItem href="/album" setActive={setActive} active={active} item="Album">
             <div className="text-sm grid grid-cols-2 gap-10 p-4">
-              {images.map((image, index) => (
+              {albums.map((image, index) => (
                 <ProductItem
                   key={index}
                   title={image.title as string}
