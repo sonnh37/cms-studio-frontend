@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   
 const DashboardPage = () => {
     return (
-        <DashboardPage/>
+        <div></div>
     );
 }
 
