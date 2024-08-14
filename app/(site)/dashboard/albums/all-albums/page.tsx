@@ -86,8 +86,8 @@ const tableHeadings = [
 interface TableRowsCustomProps {
     albums: Album[];
 }
-
-export function TableRowsCustom({ albums }: TableRowsCustomProps) {
+ 
+function TableRowsCustom({ albums }: TableRowsCustomProps) {
     return (
         <>
             {albums.map((album: Album) => (
