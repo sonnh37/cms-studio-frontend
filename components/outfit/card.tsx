@@ -22,7 +22,7 @@ export function CardComponent({ title, description, imageUrl, hoverImageUrl }: C
       >
         {/* Pseudo-element for hover effect */}
         <div
-          className="absolute inset-0 bg-black-200 opacity-0 group-hover:opacity-50 transition-opacity duration-500"
+          className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-50 transition-opacity duration-500"
           style={{ backgroundImage: `url('${hoverImageUrl}')`, backgroundSize: 'cover' }}
         />
         <div className="relative z-50 p-4">

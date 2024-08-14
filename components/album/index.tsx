@@ -58,8 +58,8 @@ export function AlbumComponent() {
 
         {albums.map(album => (
           <DirectionAwareHover key={album.id} imageUrl={album.background || ""}>
-            <p className="font-bold text-xl">{album.title}</p>
-            <p className="font-normal text-sm">{album.description}</p>
+            <p className="font-bold text-white text-xl">{album.title}</p>
+            <p className="font-normal text-white">{album.description}</p>
           </DirectionAwareHover>
         ))}
       </div>

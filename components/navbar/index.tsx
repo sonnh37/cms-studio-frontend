@@ -29,7 +29,7 @@ export function NavbarHeader() {
 
   return (
     <div className="text-[#1F2937CC] dark:text-white-100">
-      <div className="border-b-1 h-[40px] relative flex justify-between items-center flex-row overflow-hidden sm:px-52 px-5">
+      <div className="border-b-[1px] h-[40px] relative flex justify-between items-center flex-row overflow-hidden sm:px-52 px-5 ">
         <div className="flex space-x-4 flex-row">
           <div>
             <i className="fa-solid fa-phone"></i> 0908145344
@@ -180,21 +180,19 @@ function Navbar({ className }: { className?: string }) {
           <MenuItem href={"/#first-section"} setActive={setActive} active={active} item="Dịch vụ">
             <div className="flex flex-col space-y-4 text-sm">
               {services.map((service, index) => {
-                // Hàm chuyển đổi tiêu đề thành dạng slug
                 const toSlug = (title: string) => {
                   return title
                     .toLowerCase()
-                    .normalize('NFD') // chuẩn hóa Unicode
-                    .replace(/[\u0300-\u036f]/g, '') // loại bỏ dấu
-                    .replace(/[^a-z0-9 ]/g, '') // loại bỏ ký tự đặc biệt
-                    .replace(/\s+/g, '-') // thay thế khoảng trắng bằng dấu gạch ngang
-                    .trim(); // loại bỏ khoảng trắng đầu và cuối
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/đ/g, 'd')
+                    .replace(/[^a-z0-9 ]/g, '')
+                    .replace(/\s+/g, '-')
+                    .trim();
                 };
 
-                // Tạo slug từ tiêu đề
                 const slug = toSlug(service.title || '');
 
-                // Nếu tiêu đề là "Bộ ảnh trọn gói", chuyển thành "bo-anh-tron-goi"
                 const path = slug === 'bo-anh-tron-goi' ? slug : slug;
 
                 return (
@@ -203,6 +201,7 @@ function Navbar({ className }: { className?: string }) {
                   </HoveredLink>
                 );
               })}
+
             </div>
           </MenuItem>
           <Link href="/">

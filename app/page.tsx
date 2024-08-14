@@ -6,6 +6,7 @@ import Contact from "@/components/contact";
 import { Features } from "@/components/feature";
 import { Hero } from "@/components/hero";
 import Image from "next/image";
+import { NavbarHeader } from "@/components/navbar";
 
 export default function HomePage() {
   // Home page
@@ -13,6 +14,7 @@ export default function HomePage() {
     <main className="relative flex justify-center items-center flex-col overflow-hidden
    ">
       <div className="w-full">
+        <NavbarHeader/>
         <Hero />
         <div id="first-section"><Features /></div>
         <AlbumComponent />
