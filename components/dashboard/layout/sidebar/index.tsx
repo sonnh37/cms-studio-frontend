@@ -99,7 +99,7 @@ export default function SidebarDashboard() {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
-                                href="#"
+                                href="/dashboard"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
                                 <Home className="h-5 w-5" />
@@ -111,7 +111,7 @@ export default function SidebarDashboard() {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
-                                href="#"
+                                href="/dashboard/services/all-services"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
                                 <Rocket className="h-5 w-5" />
@@ -123,7 +123,7 @@ export default function SidebarDashboard() {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
-                                href="#"
+                                href="/dashboard/albums/all-albums"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
                                 <Library className="h-5 w-5" />
@@ -135,7 +135,7 @@ export default function SidebarDashboard() {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
-                                href="#"
+                                href="/dashboard/photos/all-photos"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
                                 <Images className="h-5 w-5" />
@@ -147,7 +147,7 @@ export default function SidebarDashboard() {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
-                                href="#"
+                                href="/dashboard/outfits/all-outfits"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
                                 <Shirt className="h-5 w-5" />
