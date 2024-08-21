@@ -1,6 +1,7 @@
 import Image from "next/image"
 import { useForm } from "react-hook-form"
 import Link from "next/link"
+import Swal from 'sweetalert2';
 import {
     CalendarIcon,
     ChevronLeft,
@@ -47,7 +48,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { Calendar } from "../ui/calendar"
+import axios from "axios"
 const formSchema = z.object({
+    id: z.string().optional(),
     title: z.string().min(1, "Title is required"),
     description: z.string().optional(),
     background: z.string().optional(),
@@ -137,11 +140,44 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
     };
 
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log("check_form", values);
-    }
+
+
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        try {
+            setLoading(true); // Bắt đầu trạng thái loading
+
+            if (initialData) {
+                // API cập nhật album
+                const response = await axios.put(`https://localhost:7192/album-management/albums`, values);
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Album updated successfully',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                // API tạo album
+                const response = await axios.post('https://localhost:7192/album-management/albums', values);
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Album created successfully',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            }
+        } catch (error: any) {
+            console.error(error);
+            Swal.fire({
+                title: 'Error!',
+                text: error.response?.data?.message || 'Something went wrong',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        } finally {
+            setLoading(false); // Kết thúc trạng thái loading
+        }
+    };
+
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -152,8 +188,9 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
         if (initialData) {
             // Reset the form with initial data
             form.reset({
+                id: initialData.id || "",
                 title: initialData.title || "",
-                description: initialData.description || "",
+                description: initialData.description || +"",
                 background: initialData.background || "",
                 createdDate: initialData.createdDate ? new Date(initialData.createdDate) : new Date(),
                 createdBy: initialData.createdBy || "",
@@ -164,7 +201,6 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
             // Update local state for date
             setDate(initialData.createdDate ? new Date(initialData.createdDate) : new Date());
 
-            console.log("dateee", "date")
             // Update local state for image preview and link
             setImagePreview(initialData.background || "");
             setFirebaseLink(initialData.background || "");
@@ -172,9 +208,9 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
             setDate(new Date());
         }
 
-        
 
-        
+
+
     }, [initialData, form]);
 
     return (
@@ -212,7 +248,9 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
                                 <Button variant="outline" size="sm">
                                     Discard
                                 </Button>
-                                <Button type="submit" size="sm">{action}</Button>
+                                <Button type="submit" size="sm" disabled={loading}>
+                                    {loading ? 'Processing...' : action}
+                                </Button>
                             </div>
                         </div>
                         <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">

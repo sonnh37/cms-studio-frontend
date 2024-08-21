@@ -65,6 +65,7 @@ import axios from "axios";
 import TabsListCustom from "../layout/tabs-list";
 import TableCustom from "../common/table-custom";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 const tabs = [
     { value: "all", label: "All" },
@@ -98,9 +99,33 @@ function TableRowsCustom({ albums }: TableRowsCustomProps) {
         router.push(`/dashboard/album/${albumId}`);
     };
 
-    const handleDeleteClick = (albumId: string) => {
-        // Handle delete logic here
-        console.log(`Delete clicked for album ID: ${albumId}`);
+    const handleDeleteClick = async (albumId: string) => {
+        try {
+            // Gọi API DELETE với albumId trong query string
+            const response = await axios.delete(`https://localhost:7192/album-management/albums`, {
+                params: { Id: albumId }
+            });
+    
+            // Nếu xóa thành công, thông báo cho người dùng
+            if (response.status === 200) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Album deleted successfully.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            }
+        } catch (error) {
+            // Xử lý lỗi nếu có vấn đề khi xóa album
+            console.error(`Failed to delete album with ID: ${albumId}`, error);
+    
+            Swal.fire({
+                title: 'Error!',
+                text: 'Failed to delete album. Please try again later.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
     };
     return (
         <>
