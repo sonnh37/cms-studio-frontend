@@ -1,12 +1,11 @@
 "use client";
-import { About } from "@/components/about";
-import { AlbumComponent } from "@/components/album";
-import { OutfitComponent } from "@/components/outfit";
-import Contact from "@/components/contact";
-import { Features } from "@/components/feature";
-import { Hero } from "@/components/hero";
 import Image from "next/image";
-import { NavbarHeader } from "@/components/navbar";
+import { NavbarHeader } from "@/components/layout/navbar";
+import { AlbumComponent } from "@/components/partial-page/album";
+import { Features } from "@/components/partial-page/feature";
+import { Hero } from "@/components/partial-page/hero";
+import { OutfitComponent } from "@/components/partial-page/outfits/outfit";
+import { Contact } from "lucide-react";
 
 export default function HomePage() {
   // Home page

@@ -1,7 +1,7 @@
 "use client";
 import "./globals.css";
 import { ThemeProvider } from "@/app/provider";
-import { NavbarHeader } from "@/components/navbar";
+import { NavbarHeader } from "@/components/layout/navbar";
 import { SessionProvider } from "next-auth/react";
 import Script from 'next/script';
 
