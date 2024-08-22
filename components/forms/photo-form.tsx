@@ -436,6 +436,7 @@ export const PhotoForm: React.FC<PhotoFormProps> = ({ initialData }) => {
                                                                 <SelectItem value="ALBUM">Album</SelectItem>
                                                                 <SelectItem value="OUTFIT">Outfit</SelectItem>
                                                                 <SelectItem value="BACKGROUND_WEB">Background web</SelectItem>
+                                                                <SelectItem value="NONE">None</SelectItem>
                                                             </SelectGroup>
                                                         </SelectContent>
                                                     </Select>

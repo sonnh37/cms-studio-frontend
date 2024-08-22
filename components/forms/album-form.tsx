@@ -1,5 +1,6 @@
+'use client';
 import Image from "next/image"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import Link from "next/link"
 import Swal from 'sweetalert2';
 import {
@@ -30,6 +31,7 @@ import { useEffect, useRef, useState } from "react";
 interface AlbumFormProps {
     initialData: any | null;
 }
+import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
 
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -49,6 +51,9 @@ import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { Calendar } from "../ui/calendar"
 import axios from "axios"
+import { Photo } from "@/types/photo";
+import { Checkbox } from "../ui/checkbox";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 const formSchema = z.object({
     id: z.string().optional(),
     title: z.string().min(1, "Title is required"),
@@ -58,8 +63,9 @@ const formSchema = z.object({
     createdBy: z.string().optional(),
     isDeleted: z.boolean(),
     photos: z.array(z.object({
-        url: z.string().url(),
-        description: z.string().optional(),
+        id: z.string().optional(),
+        src: z.string().optional(),
+        title: z.string().optional(),
     })).optional(),
 });
 
@@ -75,6 +81,8 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
     const [firebaseLink, setFirebaseLink] = useState<string | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [date, setDate] = useState<Date>();
+    const [photos, setPhotos] = useState<Photo[]>([]);
+    const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -207,11 +215,25 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
         } else {
             setDate(new Date());
         }
-
-
-
-
     }, [initialData, form]);
+
+
+    useEffect(() => {
+        const fetchPhotos = async () => {
+            try {
+                const response = await axios.get("https://localhost:7192/photo-management/photos", {
+                    params: {
+                        type: "NONE"
+                    }
+                });
+                setPhotos(response.data.results);
+            } catch (error) {
+                console.error("Failed to fetch photos", error);
+            }
+        };
+
+        fetchPhotos();
+    }, []);
 
     return (
         <>
@@ -429,7 +451,7 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
                                     </CardContent>
                                 </Card>
                                 <Card
-                                    className="overflow-hidden" x-chunk="dashboard-07-chunk-4"
+                                    x-chunk="dashboard-07-chunk-4"
                                 >
                                     <CardHeader>
                                         <CardTitle>Album Photos</CardTitle>
@@ -438,39 +460,53 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent>
-                                        <div className="grid gap-2">
-                                            <Image
-                                                alt="Album image"
-                                                className="aspect-square w-full rounded-md object-cover"
-                                                height="300"
-                                                src="/placeholder.svg"
-                                                width="300"
-                                            />
-                                            <div className="grid grid-cols-3 gap-2">
-                                                <button>
-                                                    <Image
-                                                        alt="Album image"
-                                                        className="aspect-square w-full rounded-md object-cover"
-                                                        height="84"
-                                                        src="/placeholder.svg"
-                                                        width="84"
-                                                    />
-                                                </button>
-                                                <button>
-                                                    <Image
-                                                        alt="Album image"
-                                                        className="aspect-square w-full rounded-md object-cover"
-                                                        height="84"
-                                                        src="/placeholder.svg"
-                                                        width="84"
-                                                    />
-                                                </button>
-                                                <button className="flex aspect-square w-full items-center justify-center rounded-md border border-dashed">
-                                                    <Upload className="h-4 w-4 text-muted-foreground" />
-                                                    <span className="sr-only">Upload</span>
-                                                </button>
-                                            </div>
-                                        </div>
+                                        <FormField
+                                            control={form.control}
+                                            name="photos"
+                                            render={({ field }) => {
+                                                // Ensure field.value is always an array
+                                                const selectedPhotos = field.value || [];
+
+                                                return (
+                                                    <FormItem>
+                                                        <DropdownMenu>
+                                                            <DropdownMenuTrigger asChild>
+                                                                <Button variant="outline">Select Photos</Button>
+                                                            </DropdownMenuTrigger>
+                                                            <DropdownMenuContent className="w-56">
+                                                                <DropdownMenuLabel>Select Photos</DropdownMenuLabel>
+                                                                <DropdownMenuSeparator />
+                                                                {photos.map((photo) => (
+                                                                    <DropdownMenuCheckboxItem
+                                                                        key={photo.id}
+                                                                        checked={selectedPhotos.some(p => p.id === photo.id)}
+                                                                        onCheckedChange={(checked) => {
+                                                                            if (checked) {
+                                                                                field.onChange([...selectedPhotos, photo]);
+                                                                            } else {
+                                                                                field.onChange(selectedPhotos.filter(p => p.id !== photo.id));
+                                                                            }
+                                                                        }}
+                                                                    >
+                                                                        <div className="flex items-center space-x-2">
+                                                                            {photo.src && (
+                                                                                <img
+                                                                                    src={photo.src}
+                                                                                    alt={photo.title || 'Photo'}
+                                                                                    className="w-8 h-8 object-cover rounded"
+                                                                                />
+                                                                            )}
+                                                                            <span>{photo.title}</span>
+                                                                        </div>
+                                                                    </DropdownMenuCheckboxItem>
+                                                                ))}
+                                                            </DropdownMenuContent>
+                                                        </DropdownMenu>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                );
+                                            }}
+                                        />
                                     </CardContent>
                                 </Card>
                                 <Card x-chunk="dashboard-07-chunk-5">

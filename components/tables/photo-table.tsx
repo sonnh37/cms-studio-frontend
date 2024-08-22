@@ -66,12 +66,13 @@ import TabsListCustom from "../layout/tabs-list";
 import TableCustom from "../common/table-custom";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import { Outfit } from "@/types/outfit";
 
 const tabs = [
     { value: "all", label: "All" },
-    { value: "active", label: "Active" },
-    { value: "draft", label: "Draft" },
-    { value: "archived", label: "Archived", className: "hidden sm:flex" },
+    { value: "album", label: "Album" },
+    { value: "outfit", label: "Outfit" },
+    { value: "other", label: "Other", className: "hidden sm:flex" },
 ];
 const tableHeadings = [
     { key: 'id', label: 'Id', className: 'hidden' },
@@ -93,8 +94,6 @@ interface TableRowsCustomProps {
     photos: Photo[];
 }
 
-
-
 function TableRowsCustom({ photos }: TableRowsCustomProps) {
     const router = useRouter();
 
@@ -109,7 +108,7 @@ function TableRowsCustom({ photos }: TableRowsCustomProps) {
             const response = await axios.delete(`https://localhost:7192/photo-management/photos`, {
                 params: { Id: photoId }
             });
-    
+
             // Nếu xóa thành công, thông báo cho người dùng
             if (response.status === 200) {
                 Swal.fire({
@@ -122,7 +121,7 @@ function TableRowsCustom({ photos }: TableRowsCustomProps) {
         } catch (error) {
             // Xử lý lỗi nếu có vấn đề khi xóa photo
             console.error(`Failed to delete photo with ID: ${photoId}`, error);
-    
+
             Swal.fire({
                 title: 'Error!',
                 text: 'Failed to delete photo. Please try again later.',
@@ -198,6 +197,9 @@ function TableRowsCustom({ photos }: TableRowsCustomProps) {
 
 export default function PhotoTable() {
     const [photos, setPhotos] = useState<Photo[]>([]);
+    const [albums, setAlbums] = useState<Photo[]>([]);
+    const [outfits, setOutfits] = useState<Photo[]>([]);
+    const [others, setOthers] = useState<Photo[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -206,6 +208,9 @@ export default function PhotoTable() {
                 const photos: Photo[] = response.data.results;
 
                 setPhotos(photos);
+                setAlbums(photos.filter(photo => photo.type === 'ALBUM'));
+                setOutfits(photos.filter(photo => photo.type === 'OUTFIT'));
+                setOthers(photos.filter(photo => photo.type !== 'ALBUM' && photo.type !== 'OUTFIT'));
             } catch (error) {
                 console.error('Failed to fetch images:', error);
             }
@@ -256,6 +261,18 @@ export default function PhotoTable() {
             </div>
             <TabsContent value="all">
                 <TableCustom tableHeadings={tableHeadings} tableRows={<TableRowsCustom photos={photos} />} label={"photo"} />
+            </TabsContent>
+
+            <TabsContent value="album">
+                <TableCustom tableHeadings={tableHeadings} tableRows={<TableRowsCustom photos={albums} />} label={"album"} />
+            </TabsContent>
+
+            <TabsContent value="outfit">
+                <TableCustom tableHeadings={tableHeadings} tableRows={<TableRowsCustom photos={outfits} />} label={"outfit"} />
+            </TabsContent>
+
+            <TabsContent value="other">
+                <TableCustom tableHeadings={tableHeadings} tableRows={<TableRowsCustom photos={others} />} label={"other"} />
             </TabsContent>
         </Tabs>
     );
