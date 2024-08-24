@@ -1,4 +1,3 @@
-import Breadcrumb from "@/components/common/breadcrumb";
 import NotFound from "@/components/not-found";
 import { Metadata } from "next";
 
@@ -9,8 +8,6 @@ export const metadata: Metadata = {
 const ErrorPage = () => {
   return (
     <>
-      <Breadcrumb pageName="404 Page" />
-
       <NotFound />
     </>
   );

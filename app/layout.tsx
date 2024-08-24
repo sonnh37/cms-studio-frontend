@@ -2,6 +2,7 @@
 import "./globals.css";
 import { ThemeProvider } from "@/app/provider";
 import { NavbarHeader } from "@/components/layout/navbar";
+import Footer from "@/components/partial-page/footer";
 import { SessionProvider } from "next-auth/react";
 import Script from 'next/script';
 
@@ -27,6 +28,7 @@ export default function RootLayout({
           </ThemeProvider>
         </SessionProvider>
       </body>
+      <Footer/>
     </html>
   );
 }
