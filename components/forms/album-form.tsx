@@ -217,24 +217,6 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
         }
     }, [initialData, form]);
 
-
-    useEffect(() => {
-        const fetchPhotos = async () => {
-            try {
-                const response = await axios.get("https://localhost:7192/photo-management/photos", {
-                    params: {
-                        type: "NONE"
-                    }
-                });
-                setPhotos(response.data.results);
-            } catch (error) {
-                console.error("Failed to fetch photos", error);
-            }
-        };
-
-        fetchPhotos();
-    }, []);
-
     return (
         <>
             <Form {...form}>
@@ -448,65 +430,6 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
                                             </div>
 
                                         </div>
-                                    </CardContent>
-                                </Card>
-                                <Card
-                                    x-chunk="dashboard-07-chunk-4"
-                                >
-                                    <CardHeader>
-                                        <CardTitle>Album Photos</CardTitle>
-                                        <CardDescription>
-                                            Lipsum dolor sit amet, consectetur adipiscing elit
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <FormField
-                                            control={form.control}
-                                            name="photos"
-                                            render={({ field }) => {
-                                                // Ensure field.value is always an array
-                                                const selectedPhotos = field.value || [];
-
-                                                return (
-                                                    <FormItem>
-                                                        <DropdownMenu>
-                                                            <DropdownMenuTrigger asChild>
-                                                                <Button variant="outline">Select Photos</Button>
-                                                            </DropdownMenuTrigger>
-                                                            <DropdownMenuContent className="w-56">
-                                                                <DropdownMenuLabel>Select Photos</DropdownMenuLabel>
-                                                                <DropdownMenuSeparator />
-                                                                {photos.map((photo) => (
-                                                                    <DropdownMenuCheckboxItem
-                                                                        key={photo.id}
-                                                                        checked={selectedPhotos.some(p => p.id === photo.id)}
-                                                                        onCheckedChange={(checked) => {
-                                                                            if (checked) {
-                                                                                field.onChange([...selectedPhotos, photo]);
-                                                                            } else {
-                                                                                field.onChange(selectedPhotos.filter(p => p.id !== photo.id));
-                                                                            }
-                                                                        }}
-                                                                    >
-                                                                        <div className="flex items-center space-x-2">
-                                                                            {photo.src && (
-                                                                                <img
-                                                                                    src={photo.src}
-                                                                                    alt={photo.title || 'Photo'}
-                                                                                    className="w-8 h-8 object-cover rounded"
-                                                                                />
-                                                                            )}
-                                                                            <span>{photo.title}</span>
-                                                                        </div>
-                                                                    </DropdownMenuCheckboxItem>
-                                                                ))}
-                                                            </DropdownMenuContent>
-                                                        </DropdownMenu>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                );
-                                            }}
-                                        />
                                     </CardContent>
                                 </Card>
                                 <Card x-chunk="dashboard-07-chunk-5">

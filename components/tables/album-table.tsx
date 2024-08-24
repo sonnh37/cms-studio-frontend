@@ -99,6 +99,11 @@ function TableRowsCustom({ albums }: TableRowsCustomProps) {
         router.push(`/dashboard/album/${albumId}`);
     };
 
+    const handlePhotosClick = (albumId: string) => {
+        // Navigate to the album details page
+        router.push(`/dashboard/album/${albumId}/photos`);
+    };
+
     const handleDeleteClick = async (albumId: string) => {
         try {
             // Gọi API DELETE với albumId trong query string
@@ -170,6 +175,7 @@ function TableRowsCustom({ albums }: TableRowsCustomProps) {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                <DropdownMenuItem onClick={() => handlePhotosClick(album.id)}>Photos</DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => handleEditClick(album.id)}>Edit</DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => handleDeleteClick(album.id)}>Delete</DropdownMenuItem>
                             </DropdownMenuContent>
