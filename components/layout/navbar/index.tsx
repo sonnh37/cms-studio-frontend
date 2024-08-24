@@ -158,6 +158,17 @@ function Navbar({ className }: { className?: string }) {
     }
   });
 
+  const toSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')  // Loại bỏ các dấu
+      .replace(/đ/g, 'd')  // Thay thế "đ" bằng "d"
+      .replace(/[^a-z0-9 ]/g, '')  // Loại bỏ các ký tự không phải chữ cái, số, hoặc khoảng trắng
+      .replace(/\s+/g, '-')  // Thay thế khoảng trắng bằng dấu gạch ngang
+      .replace(/-+$/, '')  // Loại bỏ các dấu gạch ngang dư thừa ở cuối
+      .trim();  // Loại bỏ khoảng trắng ở đầu và cuối chuỗi
+  };
 
   return (
     <AnimatePresence mode="wait">
@@ -180,23 +191,10 @@ function Navbar({ className }: { className?: string }) {
           <MenuItem href={"/#first-section"} setActive={setActive} active={active} item="Dịch vụ">
             <div className="flex flex-col space-y-4 text-sm">
               {services.map((service, index) => {
-                const toSlug = (title: string) => {
-                  return title
-                    .toLowerCase()
-                    .normalize('NFD')
-                    .replace(/[\u0300-\u036f]/g, '')
-                    .replace(/đ/g, 'd')
-                    .replace(/[^a-z0-9 ]/g, '')
-                    .replace(/\s+/g, '-')
-                    .trim();
-                };
-
                 const slug = toSlug(service.title || '');
-
-                const path = slug === 'bo-anh-tron-goi' ? slug : slug;
-
+                const path = slug;
                 return (
-                  <HoveredLink key={index} href={`/${path}`}>
+                  <HoveredLink key={index} href={`/service/${path}`}>
                     {service.title}
                   </HoveredLink>
                 );
@@ -209,15 +207,19 @@ function Navbar({ className }: { className?: string }) {
           </Link>
           <MenuItem href="/album" setActive={setActive} active={active} item="Album">
             <div className="text-sm grid grid-cols-2 gap-10 p-4">
-              {albums.map((image, index) => (
-                <ProductItem
-                  key={index}
-                  title={image.title as string}
-                  href={""}
-                  src={image.background as string}
-                  description={image.description as string}
-                />
-              ))}
+              {albums.map((image, index) => {
+                const slug = toSlug(image.title || '');
+                const path = slug;
+                return (
+                  <ProductItem
+                    key={index}
+                    title={image.title as string}
+                    href={`/album/${path}`}
+                    src={image.background as string}
+                    description={image.description as string}
+                  />
+                )
+              })}
             </div>
           </MenuItem>
           <MenuItem href="/outfit" setActive={setActive} active={active} item="Trang phục">

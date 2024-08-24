@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from 'next/navigation'; // Updated import
 import { cn } from "@/lib/utils";
 
 export const DirectionAwareHover = ({
@@ -11,18 +12,20 @@ export const DirectionAwareHover = ({
   childrenClassName,
   imageClassName,
   className,
+  detailPageUrl, // New prop for detail page URL
 }: {
   imageUrl: string;
   children: React.ReactNode | string;
   childrenClassName?: string;
   imageClassName?: string;
   className?: string;
+  detailPageUrl: string; // Add this prop
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-
   const [direction, setDirection] = useState<
     "top" | "bottom" | "left" | "right" | string
   >("left");
+  const router = useRouter(); // Initialize useRouter
 
   const handleMouseEnter = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -50,6 +53,10 @@ export const DirectionAwareHover = ({
     }
   };
 
+  const handleClick = () => {
+    router.push(detailPageUrl); // Navigate to the detail page
+  };
+
   const getDirection = (
     ev: React.MouseEvent<HTMLDivElement, MouseEvent>,
     obj: HTMLElement
@@ -64,9 +71,10 @@ export const DirectionAwareHover = ({
   return (
     <motion.div
       onMouseEnter={handleMouseEnter}
+      onClick={handleClick} // Add onClick handler
       ref={ref}
       className={cn(
-        "md:h-96 w-60 h-60 md:w-96 bg-transparent rounded-lg overflow-hidden group/card relative",
+        "md:h-96 w-60 h-60 md:w-96 bg-transparent rounded-lg overflow-hidden group/card relative cursor-pointer", // Add cursor-pointer class
         className
       )}
     >

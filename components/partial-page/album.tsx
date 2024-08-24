@@ -26,6 +26,16 @@ export function AlbumComponent() {
     fetchData();
   }, []);
 
+  const toSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/đ/g, 'd')
+      .replace(/[^a-z0-9 ]/g, '')
+      .replace(/\s+/g, '-')
+      .trim();
+  };
   return (
     <div className="py-10">
       <div className="flex flex-row items-center justify-center  relative w-full">
@@ -56,12 +66,20 @@ export function AlbumComponent() {
       </div>
       <div className="pt-10 w-full relative flex flex-col md:flex-row items-center mx-auto justify-center max-w-7xl gap-2">
 
-        {albums.map(album => (
-          <DirectionAwareHover key={album.id} imageUrl={album.background || ""}>
-            <p className="font-bold text-white text-xl">{album.title}</p>
-            <p className="font-normal text-white">{album.description}</p>
-          </DirectionAwareHover>
-        ))}
+        {albums.map(album => {
+          const slug = toSlug(album.title || '');
+          const path = slug;
+          return (
+            <DirectionAwareHover
+              key={album.id}
+              imageUrl={album.background || ""}
+              detailPageUrl={`/album/${path}`} // Format URL with encoded title
+            >
+              <p className="font-bold text-white text-xl">{album.title}</p>
+              <p className="font-normal text-white">{album.description}</p>
+            </DirectionAwareHover>
+          )
+        })}
       </div>
     </div>
   );
