@@ -38,7 +38,7 @@ export function AlbumComponent() {
   };
   return (
     <div className="py-10">
-      <div className="flex flex-row items-center justify-center  relative w-full">
+      <div className="flex flex-row h-[50px] items-center justify-center  relative w-full">
         <div className="max-w-7xl mx-auto w-full relative overflow-hidden px-4">
           <motion.div
             initial={{

@@ -2,10 +2,10 @@
 import Image from "next/image";
 import { NavbarHeader } from "@/components/layout/navbar";
 import { AlbumComponent } from "@/components/partial-page/album";
-import { Features } from "@/components/partial-page/feature";
 import { Hero } from "@/components/partial-page/hero";
 import { OutfitComponent } from "@/components/partial-page/outfits/outfit";
 import { Contact } from "lucide-react";
+import Features from "@/components/partial-page/feature";
 
 export default function HomePage() {
   // Home page

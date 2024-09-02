@@ -5,6 +5,7 @@ import axios from "axios";
 import { Outfit } from "@/types/outfit";
 import React from "react";
 import { Card } from "@/components/common/card";
+import Link from "next/link";
 
 // Định nghĩa kiểu cho dữ liệu thẻ
 interface CardData {
@@ -12,6 +13,7 @@ interface CardData {
   description: string;
   imageUrl: string;
   hoverImageUrl: string;
+  href: string;  // Add href field
 }
 
 export function OutfitComponent() {
@@ -37,23 +39,25 @@ export function OutfitComponent() {
       title: "Váy cưới",
       description: "This card is for some special elements, like displaying background gifs on hover only.",
       imageUrl: "/images/64-anh-cuoi-nen-trang-2.jpg",
-      hoverImageUrl: "/images/64-anh-cuoi-nen-trang-3.jpg"
+      hoverImageUrl: "/images/64-anh-cuoi-nen-trang-3.jpg",
+      href: "/outfit/vay-cuoi"  // Example href
     },
     {
       title: "Vest",
       description: "This card is for some special elements, like displaying background gifs on hover only.",
       imageUrl: "/images/ao-vest-cuoi-chu-re-mau-den-ve-nhon-phi-bong-1.jpeg",
-      hoverImageUrl: "/images/64-anh-cuoi-nen-trang-3.jpg"
+      hoverImageUrl: "/images/64-anh-cuoi-nen-trang-3.jpg",
+      href: "/outfit/vest"  // Example href
     },
     {
       title: "Áo dài",
       description: "This card is for some special elements, like displaying background gifs on hover only.",
       imageUrl: "/images/NICOLEBRIDAL_AO-DAI-CUOI-TRANG-DDTRF90-3-576x864.jpg",
-      hoverImageUrl: "/images/64-anh-cuoi-nen-trang-3.jpg"
+      hoverImageUrl: "/images/64-anh-cuoi-nen-trang-3.jpg",
+      href: "/outfit/ao-dai"  // Example href
     }
+
   ];
-  console.log("check_img",cardData[0].imageUrl);
-  
 
   return (
     <div className="h-[40rem] w-full py-10">
@@ -79,6 +83,7 @@ export function OutfitComponent() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto gap-5 pt-10">
         {cardData.map((card, index) => (
           
+         <Link href={card.href}>
           <Card
             key={index}
             title={card.title}
@@ -86,6 +91,7 @@ export function OutfitComponent() {
             imageUrl={card.imageUrl}
             hoverImageUrl={card.hoverImageUrl}
           />
+         </Link>
         ))}
       </div>
     </div>
