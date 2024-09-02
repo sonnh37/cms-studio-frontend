@@ -1,11 +1,11 @@
 "use client";
-import { About } from "@/components/about";
-import { Album } from "@/components/album";
-import { Clothes } from "@/components/clothes";
-import Contact from "@/components/contact";
-import { Features } from "@/components/feature";
-import { Hero } from "@/components/hero";
 import Image from "next/image";
+import { NavbarHeader } from "@/components/layout/navbar";
+import { AlbumComponent } from "@/components/partial-page/album";
+import { Hero } from "@/components/partial-page/hero";
+import { OutfitComponent } from "@/components/partial-page/outfits/outfit";
+import { Contact } from "lucide-react";
+import Features from "@/components/partial-page/feature";
 
 export default function HomePage() {
   // Home page
@@ -13,12 +13,13 @@ export default function HomePage() {
     <main className="relative flex justify-center items-center flex-col overflow-hidden
    ">
       <div className="w-full">
+        <NavbarHeader/>
         <Hero />
-        <Features />
-
-        <Album />
-        <Clothes />
+        <div id="first-section"><Features /></div>
+        <AlbumComponent />
+        <OutfitComponent />
         <Contact />
+       
       </div>
     </main>
   );

@@ -1,19 +1,16 @@
 "use client";
-
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "./provider";
-import { NavbarHeader } from "@/components/navbar";
+import { ThemeProvider } from "@/app/provider";
+import { NavbarHeader } from "@/components/layout/navbar";
+import Footer from "@/components/partial-page/footer";
 import { SessionProvider } from "next-auth/react";
-import { NextUIProvider } from "@nextui-org/react";
 import Script from 'next/script';
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html suppressHydrationWarning={true} className="!scroll-smooth" lang="en">
       <head>
@@ -22,18 +19,16 @@ export default function RootLayout({
       </head>
       <body>
         <SessionProvider>
-          <NextUIProvider>
-            <ThemeProvider
-              attribute="class"
-              enableSystem={true}
-              defaultTheme="light"
-            >
-              <NavbarHeader />
-              {children}
-            </ThemeProvider>
-          </NextUIProvider>
+          <ThemeProvider
+            attribute="class"
+            enableSystem={true}
+            defaultTheme="light"
+          >
+            <main>{children}</main>
+          </ThemeProvider>
         </SessionProvider>
       </body>
+      <Footer/>
     </html>
   );
 }
