@@ -5,5 +5,13 @@ export interface Album extends BaseEntity {
     title?: string;
     description?: string;
     background?: string;
-    photos?: Photo[];
+    albumXPhotos?: AlbumXPhoto[];
 }
+
+export interface AlbumXPhoto extends BaseEntity {
+    albumId?: string;
+    photoId?: string;
+    album?: Album;
+    photo?: Photo;
+}
+

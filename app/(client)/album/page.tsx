@@ -1,5 +1,5 @@
 import { NavbarHeader } from "@/components/layout/navbar";
-import { AlbumComponent } from "@/components/partial-page/album";
+import { AlbumComponent } from "@/components/subs/album";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

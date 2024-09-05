@@ -1,5 +1,5 @@
 "use client"
-import { HomeDashboard } from "@/components/partial-page/home-dashboard"
+import { HomeDashboard } from "@/components/subs/home-dashboard"
 
 export default function Page() {
   return (

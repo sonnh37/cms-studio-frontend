@@ -6,3 +6,4 @@ export interface BaseEntity {
     lastUpdatedDate?: Date;
     isDeleted: boolean;
 }
+

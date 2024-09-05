@@ -13,6 +13,14 @@ import axios from "axios";
 import { Photo } from "@/types/photo";
 import { Album } from "@/types/album";
 import { Service } from "@/types/service";
+import { ServiceGetAllQuery } from "@/types/queries/service-query";
+import { fetchAlbums } from "@/services/album-service";
+import { fetchServices } from "@/services/service-service";
+import { AlbumGetAllQuery } from "@/types/queries/album-query";
+import { CategoryGetAllQuery } from "@/types/queries/outfit-query";
+import { Category } from "@/types/outfit";
+import { toSlug } from "@/lib/slug-helper";
+import { fetchCategories } from "@/services/outfit-service";
 
 // Define the type for the images
 type InstagramImage = {
@@ -110,33 +118,45 @@ function Navbar({ className }: { className?: string }) {
   const pathUrl = usePathname();
 
   const [services, setServices] = useState<Service[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  const serviceGetAllQuery: ServiceGetAllQuery = {
+    pageNumber: 1,
+    pageSize: 10,
+    sortOrder: 1,
+    isActive: true,
+    isPagination: true
+  };
+
+  const albumGetAllQuery: AlbumGetAllQuery = {
+    pageNumber: 1,
+    pageSize: 5,
+    sortOrder: 1,
+    isPagination: true
+  };
+
+  const categoryGetAllQuery: CategoryGetAllQuery = {
+    isPagination: false
+  };
 
   useEffect(() => {
-    const fetchAlbum = async () => {
+    const loadAlbumsAndServices = async () => {
       try {
-        const response = await axios.get('https://localhost:7192/album-management/albums');
-        const albums: Album[] = response.data.results
+        const fetchedAlbums = await fetchAlbums(albumGetAllQuery);
+        setAlbums(fetchedAlbums);
 
-        setAlbums(albums);
+        const fetchedServices = await fetchServices(serviceGetAllQuery);
+        setServices(fetchedServices);
+
+        const fetchedCategories = await fetchCategories(categoryGetAllQuery);
+        setCategories(fetchedCategories);
+
       } catch (error) {
-        console.error('Failed to fetch images:', error);
+        console.error('Failed to load albums and services:', error);
       }
     };
 
-    const fetchService = async () => {
-      try {
-        const response = await axios.get('https://localhost:7192/service-management/services');
-        const services: Service[] = response.data.results
-
-        setServices(services);
-      } catch (error) {
-        console.error('Failed to fetch images:', error);
-      }
-    };
-
-    fetchAlbum();
-    fetchService();
-
+    loadAlbumsAndServices();
   }, []);
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
@@ -157,18 +177,6 @@ function Navbar({ className }: { className?: string }) {
       setNavbarDisplay("absolute");
     }
   });
-
-  const toSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')  // Loại bỏ các dấu
-      .replace(/đ/g, 'd')  // Thay thế "đ" bằng "d"
-      .replace(/[^a-z0-9 ]/g, '')  // Loại bỏ các ký tự không phải chữ cái, số, hoặc khoảng trắng
-      .replace(/\s+/g, '-')  // Thay thế khoảng trắng bằng dấu gạch ngang
-      .replace(/-+$/, '')  // Loại bỏ các dấu gạch ngang dư thừa ở cuối
-      .trim();  // Loại bỏ khoảng trắng ở đầu và cuối chuỗi
-  };
 
   return (
     <AnimatePresence mode="wait">
@@ -191,11 +199,11 @@ function Navbar({ className }: { className?: string }) {
           <MenuItem href={"/#first-section"} setActive={setActive} active={active} item="Dịch vụ">
             <div className="flex flex-col space-y-4 text-sm">
               {services.map((service, index) => {
-                const slug = toSlug(service.title || '');
+                const slug = toSlug(service.name || '');
                 const path = slug;
                 return (
                   <HoveredLink key={index} href={`/service/${path}`}>
-                    {service.title}
+                    {service.name}
                   </HoveredLink>
                 );
               })}
@@ -224,9 +232,13 @@ function Navbar({ className }: { className?: string }) {
           </MenuItem>
           <MenuItem href="/outfit" setActive={setActive} active={active} item="Trang phục">
             <div className="flex flex-col space-y-4 text-sm">
-              <HoveredLink href="/outfit/vay-cuoi">Váy cưới</HoveredLink>
-              <HoveredLink href="/outfit/vest">Vest</HoveredLink>
-              <HoveredLink href="/outfit/ao-dai">Áo dài</HoveredLink>
+              {categories.map((category, index) => {
+                const slug = toSlug(category.name || '');
+                const path = `/outfit/${slug}`;
+                return (
+                  <HoveredLink key={index} href={path}>{category.name}</HoveredLink>
+                );
+              })}
             </div>
           </MenuItem>
         </Menu>

@@ -1,5 +1,6 @@
-import { BaseEntity } from "./base";
-export interface Service extends BaseEntity {
+import { BaseQueryableQuery } from "./base-query";
+
+export interface ServiceGetAllQuery extends BaseQueryableQuery {
     name?: string;
     description?: string;
     src?: string;

@@ -1,11 +1,11 @@
 "use client";
 import Image from "next/image";
 import { NavbarHeader } from "@/components/layout/navbar";
-import { AlbumComponent } from "@/components/partial-page/album";
-import { Hero } from "@/components/partial-page/hero";
-import { OutfitComponent } from "@/components/partial-page/outfits/outfit";
+import { AlbumComponent } from "@/components/subs/album";
+import { Hero } from "@/components/subs/hero";
+import { OutfitComponent } from "@/components/subs/outfits/outfit";
 import { Contact } from "lucide-react";
-import Features from "@/components/partial-page/feature";
+import Features from "@/components/subs/feature";
 
 export default function HomePage() {
   // Home page

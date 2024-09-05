@@ -1,5 +1,5 @@
 import { NavbarHeader } from "@/components/layout/navbar";
-import { OutfitComponent } from "@/components/partial-page/outfits/outfit";
+import { OutfitComponent } from "@/components/subs/outfits/outfit";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -1,15 +1,13 @@
-import { Album } from "./album";
+import { AlbumXPhoto } from "./album";
 import { BaseEntity } from "./base";
-import { Outfit } from "./outfit";
+import { OutfitXPhoto } from "./outfit";
 
 export interface Photo extends BaseEntity {
   title?: string;
   description?: string;
-  href?: string;
   src?: string;
-  type?: string;
-  albumId?: string;
-  outfitId?: string;
-  album?: Album;
-  outfit?: Outfit;
+  href?: string;
+  tag?: string;
+  albumXPhotos?: AlbumXPhoto[];
+  outfitXPhotos?: OutfitXPhoto[];
 }
