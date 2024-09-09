@@ -1,5 +1,6 @@
 "use client"
-import {HomeDashboard} from "@/components/sections/home-dashboard"
+
+import {HomeDashboard} from "@/components/dashboard/sections/home-dashboard";
 
 export default function Page() {
     return (

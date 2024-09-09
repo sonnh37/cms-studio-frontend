@@ -1,7 +1,7 @@
 "use client";
 
 import {Breadcrumbs} from "@/components/user/breadcrumb";
-import AlbumTable from "@/components/dashboard/tables/albums/table";
+import DataTableAlbums from "@/components/dashboard/tables/albums";
 
 const breadcrumbItems = [
     {title: 'Dashboard', link: '/dashboard'},
@@ -12,7 +12,7 @@ export default function Page() {
     return (
         <>
             <Breadcrumbs items={breadcrumbItems}/>
-            <AlbumTable/>
+            <DataTableAlbums/>
         </>
     );
 }
