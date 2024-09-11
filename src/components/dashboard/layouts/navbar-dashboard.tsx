@@ -1,14 +1,5 @@
 "use client"
-import {
-    Home,
-    LineChart,
-    Package,
-    Package2,
-    PanelLeft,
-    Search,
-    ShoppingCart,
-    Users2
-} from "lucide-react";
+import {Home, LineChart, Package, Package2, PanelLeft, Search, ShoppingCart, Users2} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 

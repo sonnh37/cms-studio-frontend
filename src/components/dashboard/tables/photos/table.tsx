@@ -1,7 +1,5 @@
 "use client";
-import {Badge} from "@/components/ui/badge";
 import {TableCell, TableRow} from "@/components/ui/table";
-import Image from "next/image";
 import Link from "next/link";
 import {File, ListFilter, MoreHorizontal, PlusCircle} from "lucide-react";
 import {
@@ -20,11 +18,10 @@ import {Photo} from "@/types/photo";
 import {PhotoGetAllQuery} from "@/types/queries/photo-query";
 import axios from "axios";
 import {useRouter} from "next/navigation";
-import {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Swal from "sweetalert2";
 import TabsListCustom from "@/components/dashboard/tabs-list";
 import BaseTable from "@/components/dashboard/base-table";
-import React from "react";
 import {createTablePhotoColumns} from "./table-columns";
 
 export default function PhotoTable() {

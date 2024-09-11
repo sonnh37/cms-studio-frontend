@@ -1,9 +1,5 @@
 'use client';
-import {
-    CalendarIcon,
-    ChevronLeft,
-    Upload,
-} from "lucide-react";
+import {CalendarIcon, ChevronLeft, Upload,} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {useForm} from "react-hook-form";
@@ -12,33 +8,14 @@ import Swal from 'sweetalert2';
 import {Badge} from "@/components/ui/badge";
 
 import {Button} from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle
-} from "@/components/ui/card";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 
 import {Input} from "@/components/ui/input";
 
 import {Textarea} from "@/components/ui/textarea";
 
 import {useEffect, useRef, useState} from "react";
-
-interface OutfitFormProps {
-    initialData: any | null;
-}
-
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
+import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form";
 import {Photo} from "@/types/photo";
 import {zodResolver} from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -48,6 +25,10 @@ import {z} from "zod";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {storage} from "../../../../../firebase";
 import {Calendar} from "@/components/ui/calendar";
+
+interface OutfitFormProps {
+    initialData: any | null;
+}
 
 const formSchema = z.object({
     id: z.string().optional(),

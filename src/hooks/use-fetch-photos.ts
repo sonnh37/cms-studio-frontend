@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { PhotoGetAllQuery } from "@/types/queries/photo-query";
-import { Photo } from "@/types/photo";
-import { fetchPhotos } from "@/services/photo-service";
+import {useEffect, useState} from "react";
+import {PhotoGetAllQuery} from "@/types/queries/photo-query";
+import {Photo} from "@/types/photo";
+import {fetchPhotos} from "@/services/photo-service";
 
 export const useFetchPhotos = (query: PhotoGetAllQuery) => {
     const [photos, setPhotos] = useState<Photo[]>([]);
@@ -24,5 +24,5 @@ export const useFetchPhotos = (query: PhotoGetAllQuery) => {
         getPhotos();
     }, [query]);
 
-    return { photos, loading, error };
+    return {photos, loading, error};
 };

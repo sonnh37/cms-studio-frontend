@@ -1,7 +1,7 @@
 import Footer from "@/components/user/layouts/footer";
 import {NavbarHeader} from "@/components/user/layouts/navbar";
-import {OutfitComponent} from "@/components/sections/outfits/outfit";
 import {Metadata} from "next";
+import {OutfitComponent} from "@/components/user/sections/outfits/outfit";
 
 export const metadata: Metadata = {
     title: "Album | Play SaaS Starter Kit and Boilerplate for Next.js",

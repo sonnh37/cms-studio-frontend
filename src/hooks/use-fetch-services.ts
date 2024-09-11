@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { ServiceGetAllQuery } from "@/types/queries/service-query";
-import { Service } from "@/types/service";
-import { fetchServices } from "@/services/service-service";
+import {useEffect, useState} from "react";
+import {ServiceGetAllQuery} from "@/types/queries/service-query";
+import {Service} from "@/types/service";
+import {fetchServices} from "@/services/service-service";
 
 export const useFetchServices = (query: ServiceGetAllQuery) => {
     const [services, setServices] = useState<Service[]>([]);
@@ -24,5 +24,5 @@ export const useFetchServices = (query: ServiceGetAllQuery) => {
         getServices();
     }, [query]);
 
-    return { services, loading, error };
+    return {services, loading, error};
 };

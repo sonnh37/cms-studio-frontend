@@ -7,8 +7,8 @@ import Image from "next/image";
 const transition = {
     type: "spring",
     mass: 0.5,
-    damping: 8,
-    stiffness: 150,
+    damping: 11.5,
+    stiffness: 100,
     restDelta: 0.001,
     restSpeed: 0.001,
 };
@@ -31,7 +31,7 @@ export const MenuItem = ({
         <motion.div onMouseEnter={() => setActive(item)} onHoverStart={() => setHovered(true)}
                     onHoverEnd={() => setHovered(false)}
 
-                    className="relative dark:hover:text-white py-2 px-3 hover:text-black hover:opacity-100 hover:inset-0 hover:transform
+                    className="relative dark:hover:text-white py-2 hover:text-black hover:opacity-100 hover:inset-0 hover:transform
                 hover:bg-gradient-to-b  hover:rounded-sm  ">
             <Link href={href}>
                 <motion.p
@@ -46,10 +46,7 @@ export const MenuItem = ({
                 <motion.div
                     initial={{opacity: 0, scale: 0.85, y: 10}}
                     animate={{opacity: 1, scale: 1, y: 0}}
-                    exit={{
-                        opacity: 0,
-                        transition: {duration: 0.15, delay: 0.2},
-                    }}
+
                     transition={transition}
                 >
                     {active === item && (
@@ -72,7 +69,7 @@ export const MenuItem = ({
                 </motion.div>
             )}
             <div
-                className={`border-t-2 border-black-100 dark:border-white-100 rounded-xl transition-all duration-300 ease-in-out ${hovered ? 'w-10/12' : 'w-0'}`}></div>
+                className={` border-black dark:border-white-100 transition-all border-t-[1px] duration-500 ease-in-out ${hovered ? 'w-full' : 'w-0'}`}></div>
         </motion.div>
     );
 };

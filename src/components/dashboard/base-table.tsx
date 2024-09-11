@@ -1,18 +1,5 @@
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import {
-    Table,
-    TableBody,
-    TableHead,
-    TableHeader,
-    TableRow
-} from "@/components/ui/table"
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
+import {Table, TableBody, TableHead, TableHeader, TableRow} from "@/components/ui/table"
 
 const capitalizeFirstLetter = (string: string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);

@@ -144,7 +144,8 @@ function Navbar({className}: { className?: string }) {
         const loadAlbumsAndServices = async () => {
             try {
                 const fetchedAlbums = await fetchAlbums(albumGetAllQuery);
-                setAlbums(fetchedAlbums);
+                const albums = fetchedAlbums.results as Album[];
+                setAlbums(albums);
 
                 const fetchedServices = await fetchServices(serviceGetAllQuery);
                 setServices(fetchedServices);
@@ -196,8 +197,8 @@ function Navbar({className}: { className?: string }) {
                 className={cn(`${navbarDisplay} top-14 inset-x-0 w-full mx-auto z-50`, className)}
             >
                 <Menu setActive={setActive}>
-                    <MenuItem href="/" setActive={setActive} active={null} item="Trang chủ"></MenuItem>
-                    <MenuItem href={"/#first-section"} setActive={setActive} active={active} item="Dịch vụ">
+                    <MenuItem href="/" setActive={setActive} active={null} item="Home"></MenuItem>
+                    <MenuItem href={"/#first-section"} setActive={setActive} active={active} item="Service">
                         <div className="flex flex-col space-y-4 text-sm">
                             {services.map((service, index) => {
                                 const slug = toSlug(service.name || '');
@@ -212,7 +213,10 @@ function Navbar({className}: { className?: string }) {
                         </div>
                     </MenuItem>
                     <Link href="/">
-                        <img src={logoSrc} width={"200"} height={""} alt="logo"/>
+                        <h1 className="font-greatvibes text-4xl">
+                            Nhu My
+                        </h1>
+                        {/*<img src={logoSrc} width={"200"} height={""} alt="logo"/>*/}
                     </Link>
                     <MenuItem href="/album" setActive={setActive} active={active} item="Album">
                         <div className="text-sm grid grid-cols-2 gap-10 p-4">
@@ -231,7 +235,7 @@ function Navbar({className}: { className?: string }) {
                             })}
                         </div>
                     </MenuItem>
-                    <MenuItem href="/outfit" setActive={setActive} active={active} item="Trang phục">
+                    <MenuItem href="/outfit" setActive={setActive} active={active} item="Outfit">
                         <div className="flex flex-col space-y-4 text-sm">
                             {categories.map((category, index) => {
                                 const slug = toSlug(category.name || '');

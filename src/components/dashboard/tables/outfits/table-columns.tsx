@@ -1,7 +1,6 @@
 import {createTableColumnsBase} from "@/components/dashboard/base-table-column";
 import {TableCell} from "@/components/ui/table";
 import {Outfit} from "@/types/outfit";
-import Image from "next/image";
 
 export const createTableOutfitColumns = () => {
     const baseColumns = createTableColumnsBase();

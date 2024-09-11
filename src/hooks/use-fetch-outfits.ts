@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { OutfitGetAllQuery } from "@/types/queries/outfit-query";
-import { Outfit } from "@/types/outfit";
-import { fetchOutfits } from "@/services/outfit-service";
+import {useEffect, useState} from "react";
+import {OutfitGetAllQuery} from "@/types/queries/outfit-query";
+import {Outfit} from "@/types/outfit";
+import {fetchOutfits} from "@/services/outfit-service";
 
 export const useFetchOutfits = (query: OutfitGetAllQuery) => {
     const [outfits, setOutfits] = useState<Outfit[]>([]);
@@ -24,5 +24,5 @@ export const useFetchOutfits = (query: OutfitGetAllQuery) => {
         getOutfits();
     }, [query]);
 
-    return { outfits, loading, error };
+    return {outfits, loading, error};
 };

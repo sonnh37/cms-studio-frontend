@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { AlbumGetAllQuery } from "@/types/queries/album-query";
-import { Album } from "@/types/album";
-import { fetchAlbums } from "@/services/album-service";
+import {useEffect, useState} from "react";
+import {AlbumGetAllQuery} from "@/types/queries/album-query";
+import {Album} from "@/types/album";
+import {fetchAlbums} from "@/services/album-service";
 
 export const useFetchAlbums = (query: AlbumGetAllQuery) => {
     const [pagedResponse, setPagedResponse] = useState<PagedResponse<Album>>();
@@ -24,5 +24,5 @@ export const useFetchAlbums = (query: AlbumGetAllQuery) => {
         getAlbums();
     }, [query]);
 
-    return { pagedResponse, loading, error };
+    return {pagedResponse, loading, error};
 };
