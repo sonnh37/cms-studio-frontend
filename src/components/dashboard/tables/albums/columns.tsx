@@ -1,57 +1,3 @@
-// import {createTableColumnsBase} from "@/components/dashboard/base-table-column";
-// import {TableCell} from "@/components/ui/table";
-// import {Album} from "@/types/album";
-// import Image from "next/image";
-//
-// export const createTableAlbumColumns = () => {
-//     const baseColumns = createTableColumnsBase();
-//
-//     const albumColumns = [
-//         {
-//             key: "background",
-//             label: "Background",
-//             className: "",
-//             isDisplay: true,
-//             render: (item: Album) => (
-//                 <TableCell key="background" className="hidden sm:table-cell">
-//                     <Image
-//                         alt={`${item.title} image`}
-//                         className="aspect-square rounded-md object-cover"
-//                         height="64"
-//                         src={item.background || "/placeholder.svg"}
-//                         width="64"
-//                     />
-//                 </TableCell>
-//             ),
-//         },
-//         {
-//             key: "title",
-//             label: "Title",
-//             className: "",
-//             isDisplay: true,
-//             render: (item: Album) => (
-//                 <TableCell key="title" className="font-medium">
-//                     {item.title || "No Title"}
-//                 </TableCell>
-//             ),
-//         },
-//         {
-//             key: "description",
-//             label: "Description",
-//             className: "hidden md:table-cell",
-//             isDisplay: true,
-//             render: (item: Album) => (
-//                 <TableCell key="description">{item.description || "N/A"}</TableCell>
-//             ),
-//         },
-//         // Bạn có thể thêm các cột tùy chỉnh khác cho Album tại đây
-//     ];
-//
-//     // Kết hợp các cột cơ bản với các cột riêng biệt cho Album
-//     return [...albumColumns, ...baseColumns];
-// };
-
-
 "use client"
 
 import {ColumnDef} from "@tanstack/react-table"
@@ -69,12 +15,13 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {Checkbox} from "@/components/ui/checkbox";
-import {DataTableColumnHeader} from "@/components/dashboard/data-table-column-header";
+import {DataTableColumnHeader} from "@/components/dashboard/data-table/data-table-column-header";
 import axios from "axios";
 import Swal from "sweetalert2";
 import {useRouter} from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import {Badge} from "@/components/ui/badge";
 
 
 export const columns: ColumnDef<Album>[] = [
@@ -129,6 +76,43 @@ export const columns: ColumnDef<Album>[] = [
                 </Link>
             );
         },
+    },
+    {
+        accessorKey: "createdDate",
+        header: ({column}) => (
+            <DataTableColumnHeader column={column} title="Data created"/>
+        ),
+        cell: ({ row }) => {
+            const date = new Date(row.getValue("createdDate"));
+            return date.toLocaleDateString('en-US', {
+                weekday: 'short', // Thu
+                year: 'numeric',  // 2022
+                month: 'short',   // Oct
+                day: 'numeric'    // 20
+            });
+        }
+    },
+    {
+        accessorKey: "isDeleted",
+        header: ({column}) => (
+            <DataTableColumnHeader column={column} title=""/>
+        ),
+        cell: ({ row }) => {
+            const isDeleted = row.getValue("isDeleted") as boolean;
+            if (!isDeleted) {
+                return (
+                    <Badge variant="secondary">Active</Badge>
+                );
+            }
+            return (
+                <Badge variant="destructive">Deactivate</Badge>
+            );
+        },
+        filterFn: (row, id, value) => {
+            const isDeletedValue = row.getValue(id) as boolean;
+            return value.includes(isDeletedValue.toString()); // Chuyển đổi boolean sang string để so sánh
+        },
+        enableGlobalFilter: false
     },
     {
         id: "actions",

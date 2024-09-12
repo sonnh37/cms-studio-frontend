@@ -4,8 +4,10 @@ import * as React from "react"
 import {useEffect, useRef} from "react"
 import {
     ColumnDef,
+    ColumnFiltersState,
     flexRender,
     getCoreRowModel,
+    getFilteredRowModel,
     PaginationState,
     SortingState,
     useReactTable,
@@ -14,35 +16,48 @@ import {
 import {keepPreviousData, useQuery,} from '@tanstack/react-query'
 
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
-import {Input} from "@/components/ui/input";
-import {DataTableViewOptions} from "@/components/dashboard/data-table-view-options-props";
-import {DataTablePagination} from "@/components/dashboard/data-table-pagination-props";
+import {DataTablePagination} from "@/components/dashboard/data-table/data-table-pagination";
 import {BaseQueryableQuery} from "@/types/queries/base-query";
+import {DataTableToolbar} from "@/components/dashboard/data-table/data-table-toolbar";
+import {Button} from "@/components/ui/button";
+import {File, PlusCircle} from "lucide-react";
+import Link from "next/link";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     fetchData: (queryParams: BaseQueryableQuery) => Promise<PagedResponse<TData>>;
+    stringObject: string
 }
 
 export function DataTable<TData, TValue>({
                                              columns,
                                              fetchData,
+                                             stringObject
                                          }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+        []
+    )
     const [pagination, setPagination] = React.useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
     });
 
+    const isDeletedFilter = columnFilters.find(filter => filter.id === 'isDeleted');
+    const isDeleted = isDeletedFilter ? isDeletedFilter.value as boolean : undefined;
+
     const [queryParams, setQueryParams] = React.useState<BaseQueryableQuery>({
         pageNumber: pagination.pageIndex + 1,
         pageSize: pagination.pageSize,
-        sortField: sorting.length > 0 ? sorting[0]?.id : 'CreatedDate', // Cột sắp xếp
-        sortOrder: sorting.length > 0 ? (sorting[0]?.desc ? -1 : 1) : 1, // Thứ tự sắp xếp
+        sortField: sorting.length > 0 ? sorting[0]?.id : 'CreatedDate',
+        sortOrder: sorting.length > 0 ? (sorting[0]?.desc ? -1 : 1) : 1,
         isPagination: true,
     });
 
     useEffect(() => {
+        const isDeletedFilter = columnFilters.find(filter => filter.id === 'isDeleted');
+        const isDeleted = isDeletedFilter ? isDeletedFilter.value as boolean : undefined;
+        console.log("checkkkk,", isDeleted)
         setQueryParams({
             pageNumber: pagination.pageIndex + 1,
             pageSize: pagination.pageSize,
@@ -50,7 +65,7 @@ export function DataTable<TData, TValue>({
             sortOrder: sorting.length > 0 ? (sorting[0]?.desc ? -1 : 1) : 1,
             isPagination: true,
         });
-    }, [pagination, sorting]);
+    }, [pagination, sorting, columnFilters]);
 
     const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -75,11 +90,14 @@ export function DataTable<TData, TValue>({
         state: {
             pagination,
             sorting,
+            columnFilters
         },
         onPaginationChange: (newPagination) => setPagination(newPagination),
         onSortingChange: (newSorting) => setSorting(newSorting),
         getCoreRowModel: getCoreRowModel(),
         manualPagination: true,
+        onColumnFiltersChange: setColumnFilters,
+        getFilteredRowModel: getFilteredRowModel(),
         debugTable: true,
     });
 
@@ -87,18 +105,8 @@ export function DataTable<TData, TValue>({
     if (error) return <div>Error loading data</div>;
 
     return (
-        <div ref={scrollRef}>
-            <div className="flex items-center py-4">
-                <Input
-                    placeholder="Filter emails..."
-                    value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("title")?.setFilterValue(event.target.value)
-                    }
-                    className="max-w-sm"
-                />
-                <DataTableViewOptions table={table}/>
-            </div>
+        <div ref={scrollRef} className="space-y-4">
+            <DataTableToolbar stringObject={stringObject} table={table}/>
             <div className="rounded-md border">
                 <Table>
                     <TableHeader>
