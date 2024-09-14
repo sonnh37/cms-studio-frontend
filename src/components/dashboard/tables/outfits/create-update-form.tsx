@@ -26,7 +26,7 @@ import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {storage} from "../../../../../firebase";
 import {Calendar} from "@/components/ui/calendar";
 
-interface PhotoFormProps {
+interface OutfitFormProps {
     initialData: any | null;
 }
 
@@ -45,14 +45,14 @@ const formSchema = z.object({
     })).optional(),
 });
 
-export const PhotoForm: React.FC<PhotoFormProps> = ({
-                                                        initialData
-                                                    }) => {
+export const OutfitForm: React.FC<OutfitFormProps> = ({
+                                                          initialData
+                                                      }) => {
     const [loading, setLoading] = useState(false);
     const [imgLoading, setImgLoading] = useState(false);
-    const title = initialData ? 'Edit photo' : 'Create photo';
-    const description = initialData ? 'Edit a photo.' : 'Add a new photo';
-    const toastMessage = initialData ? 'Photo updated.' : 'Photo created.';
+    const title = initialData ? 'Edit outfit' : 'Create outfit';
+    const description = initialData ? 'Edit a outfit.' : 'Add a new outfit';
+    const toastMessage = initialData ? 'Outfit updated.' : 'Outfit created.';
     const action = initialData ? 'Save changes' : 'Create';
     const [firebaseLink, setFirebaseLink] = useState<string | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -66,7 +66,7 @@ export const PhotoForm: React.FC<PhotoFormProps> = ({
         const file = event.target.files?.[0];
         if (file) {
             setImgLoading(true);
-            const storageRef = ref(storage, `Photo/${file.name}`);
+            const storageRef = ref(storage, `Outfit/${file.name}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
 
             uploadTask.on(
@@ -129,20 +129,20 @@ export const PhotoForm: React.FC<PhotoFormProps> = ({
             setLoading(true); // Bắt đầu trạng thái loading
 
             if (initialData) {
-                // API cập nhật photo
-                const response = await axios.put(`https://localhost:7192/photos`, values);
+                // API cập nhật outfit
+                const response = await axios.put(`https://localhost:7192/outfits`, values);
                 Swal.fire({
                     title: 'Success!',
-                    text: 'Photo updated successfully',
+                    text: 'Outfit updated successfully',
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });
             } else {
-                // API tạo photo
-                const response = await axios.post('https://localhost:7192/photos', values);
+                // API tạo outfit
+                const response = await axios.post('https://localhost:7192/outfits', values);
                 Swal.fire({
                     title: 'Success!',
-                    text: 'Photo created successfully',
+                    text: 'Outfit created successfully',
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });
@@ -204,9 +204,9 @@ export const PhotoForm: React.FC<PhotoFormProps> = ({
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
-                    <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
+                    <div className="grid max-w-[59rem] flex-1 auto-rows-max gap-4">
                         <div className="flex items-center gap-4">
-                            <Link href="/dashboard/photo">
+                            <Link href="/dashboard/outfit">
                                 <Button variant="outline" size="icon" className="h-7 w-7">
                                     <ChevronLeft className="h-4 w-4"/>
                                     <span className="sr-only">Back</span>
@@ -214,7 +214,7 @@ export const PhotoForm: React.FC<PhotoFormProps> = ({
                             </Link>
 
                             <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-                                Photo Controller
+                                Outfit Controller
                             </h1>
                             <Badge variant="outline" className="ml-auto sm:ml-0">
                                 <FormField
@@ -243,7 +243,7 @@ export const PhotoForm: React.FC<PhotoFormProps> = ({
                             <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
                                 <Card x-chunk="dashboard-07-chunk-0">
                                     <CardHeader>
-                                        <CardTitle>Photo Details</CardTitle>
+                                        <CardTitle>Outfit Details</CardTitle>
                                         <CardDescription>
                                             Lipsum dolor sit amet, consectetur adipiscing elit
                                         </CardDescription>
@@ -277,7 +277,7 @@ export const PhotoForm: React.FC<PhotoFormProps> = ({
                                                         <FormItem>
                                                             <FormLabel>Description</FormLabel>
                                                             <FormControl>
-                                                                <Textarea placeholder="Photo description" {...field} />
+                                                                <Textarea placeholder="Outfit description" {...field} />
                                                             </FormControl>
                                                             <FormMessage/>
                                                         </FormItem>
@@ -291,7 +291,7 @@ export const PhotoForm: React.FC<PhotoFormProps> = ({
                                     className="overflow-hidden" x-chunk="dashboard-07-chunk-2"
                                 >
                                     <CardHeader>
-                                        <CardTitle>Photo Background</CardTitle>
+                                        <CardTitle>Outfit Background</CardTitle>
                                         <CardDescription>
                                             Lipsum dolor sit amet, consectetur adipiscing elit
                                         </CardDescription>
@@ -299,13 +299,13 @@ export const PhotoForm: React.FC<PhotoFormProps> = ({
                                     <CardContent>
                                         <FormField control={form.control} name="background" render={({field}) => (
                                             <FormItem>
-                                                <FormLabel>Photo Background</FormLabel>
+                                                <FormLabel>Outfit Background</FormLabel>
                                                 <FormControl>
                                                     <div className="grid gap-2">
                                                         {imagePreview ? (
                                                             <>
                                                                 <Image
-                                                                    alt="Photo Background"
+                                                                    alt="Outfit Background"
                                                                     className="aspect-square w-full rounded-md object-cover"
                                                                     height={300}
                                                                     src={imagePreview}
@@ -419,7 +419,7 @@ export const PhotoForm: React.FC<PhotoFormProps> = ({
                                 </Card>
                                 <Card x-chunk="dashboard-07-chunk-5">
                                     <CardHeader>
-                                        <CardTitle>Archive Photo</CardTitle>
+                                        <CardTitle>Archive Outfit</CardTitle>
                                         <CardDescription>
                                             Lipsum dolor sit amet, consectetur adipiscing elit.
                                         </CardDescription>
@@ -427,7 +427,7 @@ export const PhotoForm: React.FC<PhotoFormProps> = ({
                                     <CardContent>
                                         <div></div>
                                         <Button size="sm" variant="secondary">
-                                            Archive Photo
+                                            Archive Outfit
                                         </Button>
                                     </CardContent>
                                 </Card>
@@ -437,7 +437,7 @@ export const PhotoForm: React.FC<PhotoFormProps> = ({
                             <Button variant="outline" size="sm">
                                 Discard
                             </Button>
-                            <Button size="sm">Save Photo</Button>
+                            <Button size="sm">Save Outfit</Button>
                         </div>
                     </div>
                 </form>

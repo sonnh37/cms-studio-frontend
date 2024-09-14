@@ -3,7 +3,6 @@
 import {DropdownMenuTrigger} from "@radix-ui/react-dropdown-menu"
 import {MixerHorizontalIcon} from "@radix-ui/react-icons"
 import {Table} from "@tanstack/react-table"
-
 import {Button} from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -29,6 +28,7 @@ export function DataTableViewOptions<TData>({
         <div className="ml-auto flex items-center gap-2">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
+
                     <Button
                         variant="outline"
                         size="sm"
@@ -37,6 +37,7 @@ export function DataTableViewOptions<TData>({
                         <MixerHorizontalIcon className="mr-2 h-4 w-4"/>
                         View
                     </Button>
+
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-[150px]">
                     <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
@@ -62,18 +63,22 @@ export function DataTableViewOptions<TData>({
                 </DropdownMenuContent>
             </DropdownMenu>
 
+
             <Button size="sm" variant="outline" className="h-8 gap-1">
                 <File className="h-3.5 w-3.5"/>
                 <span className=" sm:whitespace-nowrap">Export</span>
             </Button>
+
             <Link
                 className="text-primary-foreground sm:whitespace-nowrap"
                 href={`/dashboard/${stringObject.toLowerCase()}/new`}
             >
+
                 <Button size="sm" className="h-8 gap-1">
-                    <PlusCircle className="fill-primary-foreground h-3.5 w-3.5"/>
+                    <PlusCircle className="fill-primary-background h-3.5 w-3.5"/>
                     Add {stringObject.toLowerCase()}
                 </Button>
+
             </Link>
         </div>
     )

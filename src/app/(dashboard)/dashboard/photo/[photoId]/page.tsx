@@ -1,9 +1,10 @@
 "use client";
 import {Breadcrumbs} from "@/components/user/breadcrumb";
-import {PhotoForm} from "@/components/dashboard/tables/photos/form";
 import {Photo} from "@/types/photo";
 import axios from "axios";
 import {useEffect, useState} from "react";
+import {ContentLayout} from "@/components/dashboard/content-layout";
+import {PhotoForm} from "@/components/dashboard/tables/photos/create-update-form";
 
 export default function Page({params}: { params: { photoId: string } }) {
     const [photo, setPhoto] = useState<Photo | null>(null);
@@ -30,9 +31,11 @@ export default function Page({params}: { params: { photoId: string } }) {
     ];
 
     return (
-        <>
-            <Breadcrumbs items={breadcrumbItems}/>
-            <PhotoForm initialData={photo}/>
-        </>
+        <ContentLayout title="Photo">
+            <div className="space-y-6">
+                <Breadcrumbs items={breadcrumbItems}/>
+                <PhotoForm initialData={photo}/>
+            </div>
+        </ContentLayout>
     );
 }

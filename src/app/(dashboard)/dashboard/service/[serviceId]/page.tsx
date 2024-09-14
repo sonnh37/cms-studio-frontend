@@ -1,9 +1,10 @@
 "use client";
 import {Breadcrumbs} from "@/components/user/breadcrumb";
-import {ServiceForm} from "@/components/dashboard/tables/services/form";
 import {Service} from "@/types/service";
 import axios from "axios";
 import {useEffect, useState} from "react";
+import {ContentLayout} from "@/components/dashboard/content-layout";
+import {ServiceForm} from "@/components/dashboard/tables/services/create-update-form";
 
 export default function Page({params}: { params: { serviceId: string } }) {
     const [service, setService] = useState<Service | null>(null);
@@ -29,9 +30,11 @@ export default function Page({params}: { params: { serviceId: string } }) {
     ];
 
     return (
-        <>
-            <Breadcrumbs items={breadcrumbItems}/>
-            <ServiceForm initialData={service}/>
-        </>
+        <ContentLayout title="Service">
+            <div className="space-y-6">
+                <Breadcrumbs items={breadcrumbItems}/>
+                <ServiceForm initialData={service}/>
+            </div>
+        </ContentLayout>
     );
 }

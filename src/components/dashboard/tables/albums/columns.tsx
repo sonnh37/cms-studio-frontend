@@ -82,7 +82,7 @@ export const columns: ColumnDef<Album>[] = [
         header: ({column}) => (
             <DataTableColumnHeader column={column} title="Data created"/>
         ),
-        cell: ({ row }) => {
+        cell: ({row}) => {
             const date = new Date(row.getValue("createdDate"));
             return date.toLocaleDateString('en-US', {
                 weekday: 'short', // Thu
@@ -97,7 +97,7 @@ export const columns: ColumnDef<Album>[] = [
         header: ({column}) => (
             <DataTableColumnHeader column={column} title=""/>
         ),
-        cell: ({ row }) => {
+        cell: ({row}) => {
             const isDeleted = row.getValue("isDeleted") as boolean;
             if (!isDeleted) {
                 return (
@@ -170,7 +170,6 @@ export const columns: ColumnDef<Album>[] = [
                         >
                             Copy model ID
                         </DropdownMenuItem>
-                        <DropdownMenuItem>View details</DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handlePhotosClick(model.id)}>
                             View photos
                         </DropdownMenuItem>

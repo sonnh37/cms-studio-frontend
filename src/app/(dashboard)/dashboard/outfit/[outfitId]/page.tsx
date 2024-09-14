@@ -1,14 +1,14 @@
 "use client";
 import {Breadcrumbs} from "@/components/user/breadcrumb";
-import {OutfitForm} from "@/components/dashboard/tables/outfits/form";
+import {OutfitForm} from "@/components/dashboard/tables/outfits/create-update-form";
 import {Outfit} from "@/types/outfit";
 import axios from "axios";
 import {useEffect, useState} from "react";
+import {ContentLayout} from "@/components/dashboard/content-layout";
 
 export default function Page({params}: { params: { outfitId: string } }) {
     const [outfit, setOutfit] = useState<Outfit | null>(null);
 
-    // Fetch outfit data when params.outfitId changes
     useEffect(() => {
         if (params.outfitId) {
             axios.get(`https://localhost:7192/outfits/${params.outfitId}`)
@@ -21,7 +21,6 @@ export default function Page({params}: { params: { outfitId: string } }) {
         }
     }, [params.outfitId]);
 
-    // Set breadcrumb items based on params.outfitId and outfit data
     const breadcrumbItems = [
         {title: 'Dashboard', link: '/dashboard'},
         {title: 'Outfit', link: '/dashboard/outfit'},
@@ -29,9 +28,11 @@ export default function Page({params}: { params: { outfitId: string } }) {
     ];
 
     return (
-        <>
-            <Breadcrumbs items={breadcrumbItems}/>
-            <OutfitForm initialData={outfit}/>
-        </>
+        <ContentLayout title="Outfit">
+            <div className="space-y-6">
+                <Breadcrumbs items={breadcrumbItems}/>
+                <OutfitForm initialData={outfit}/>
+            </div>
+        </ContentLayout>
     );
 }

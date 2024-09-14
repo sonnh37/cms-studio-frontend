@@ -13,3 +13,7 @@ interface PagedResponse<TResult> {
     sortField?: string;
     sortOrder?: SortOrder;
 }
+
+interface ItemResponse<TResult> {
+    result?: TResult;
+}

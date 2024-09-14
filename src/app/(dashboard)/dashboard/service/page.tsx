@@ -1,7 +1,8 @@
 "use client";
 
 import {Breadcrumbs} from "@/components/user/breadcrumb";
-import ServiceTable from "@/components/dashboard/tables/services/table";
+import DataTableServices from "@/components/dashboard/tables/services";
+import {ContentLayout} from "@/components/dashboard/content-layout";
 
 const breadcrumbItems = [
     {title: 'Dashboard', link: '/dashboard'},
@@ -10,10 +11,12 @@ const breadcrumbItems = [
 
 export default function Page() {
     return (
-        <>
-            <Breadcrumbs items={breadcrumbItems}/>
-            <ServiceTable/>
-        </>
+        <ContentLayout title="Service">
+            <div className="space-y-6">
+                <Breadcrumbs items={breadcrumbItems}/>
+                <DataTableServices/>
+            </div>
+        </ContentLayout>
     );
 }
 

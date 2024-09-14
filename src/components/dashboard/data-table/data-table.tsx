@@ -19,9 +19,7 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/
 import {DataTablePagination} from "@/components/dashboard/data-table/data-table-pagination";
 import {BaseQueryableQuery} from "@/types/queries/base-query";
 import {DataTableToolbar} from "@/components/dashboard/data-table/data-table-toolbar";
-import {Button} from "@/components/ui/button";
-import {File, PlusCircle} from "lucide-react";
-import Link from "next/link";
+import BarLoader from "@/components/common/bar-loader"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -57,7 +55,6 @@ export function DataTable<TData, TValue>({
     useEffect(() => {
         const isDeletedFilter = columnFilters.find(filter => filter.id === 'isDeleted');
         const isDeleted = isDeletedFilter ? isDeletedFilter.value as boolean : undefined;
-        console.log("checkkkk,", isDeleted)
         setQueryParams({
             pageNumber: pagination.pageIndex + 1,
             pageSize: pagination.pageSize,
@@ -101,7 +98,7 @@ export function DataTable<TData, TValue>({
         debugTable: true,
     });
 
-    if (isFetching) return <div>Loading...</div>;
+    if (isFetching) return <div><BarLoader/></div>;
     if (error) return <div>Error loading data</div>;
 
     return (

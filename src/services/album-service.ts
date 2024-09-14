@@ -14,3 +14,15 @@ export const fetchAlbums = (query: AlbumGetAllQuery): Promise<PagedResponse<Albu
             throw error;
         });
 };
+
+export const fetchAlbum = (id: string): Promise<ItemResponse<Album>> => {
+
+    return axios.get(`https://localhost:7192/albums/${id}`)
+        .then((response) => {
+            return response.data as ItemResponse<Album>;
+        })
+        .catch((error) => {
+            console.error('Failed to fetch albums:', error);
+            throw error;
+        });
+};

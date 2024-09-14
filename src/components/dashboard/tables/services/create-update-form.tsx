@@ -26,7 +26,7 @@ import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {storage} from "../../../../../firebase";
 import {Calendar} from "@/components/ui/calendar";
 
-interface AlbumFormProps {
+interface ServiceFormProps {
     initialData: any | null;
 }
 
@@ -45,14 +45,14 @@ const formSchema = z.object({
     })).optional(),
 });
 
-export const AlbumForm: React.FC<AlbumFormProps> = ({
-                                                        initialData
-                                                    }) => {
+export const ServiceForm: React.FC<ServiceFormProps> = ({
+                                                            initialData
+                                                        }) => {
     const [loading, setLoading] = useState(false);
     const [imgLoading, setImgLoading] = useState(false);
-    const title = initialData ? 'Edit album' : 'Create album';
-    const description = initialData ? 'Edit a album.' : 'Add a new album';
-    const toastMessage = initialData ? 'Album updated.' : 'Album created.';
+    const title = initialData ? 'Edit service' : 'Create service';
+    const description = initialData ? 'Edit a service.' : 'Add a new service';
+    const toastMessage = initialData ? 'Service updated.' : 'Service created.';
     const action = initialData ? 'Save changes' : 'Create';
     const [firebaseLink, setFirebaseLink] = useState<string | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -66,7 +66,7 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
         const file = event.target.files?.[0];
         if (file) {
             setImgLoading(true);
-            const storageRef = ref(storage, `Album/${file.name}`);
+            const storageRef = ref(storage, `Service/${file.name}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
 
             uploadTask.on(
@@ -129,20 +129,20 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
             setLoading(true); // Bắt đầu trạng thái loading
 
             if (initialData) {
-                // API cập nhật album
-                const response = await axios.put(`https://localhost:7192/albums`, values);
+                // API cập nhật service
+                const response = await axios.put(`https://localhost:7192/services`, values);
                 Swal.fire({
                     title: 'Success!',
-                    text: 'Album updated successfully',
+                    text: 'Service updated successfully',
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });
             } else {
-                // API tạo album
-                const response = await axios.post('https://localhost:7192/albums', values);
+                // API tạo service
+                const response = await axios.post('https://localhost:7192/services', values);
                 Swal.fire({
                     title: 'Success!',
-                    text: 'Album created successfully',
+                    text: 'Service created successfully',
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });
@@ -204,9 +204,9 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
-                    <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
+                    <div className="grid max-w-[59rem] flex-1 auto-rows-max gap-4">
                         <div className="flex items-center gap-4">
-                            <Link href="/dashboard/album">
+                            <Link href="/dashboard/service">
                                 <Button variant="outline" size="icon" className="h-7 w-7">
                                     <ChevronLeft className="h-4 w-4"/>
                                     <span className="sr-only">Back</span>
@@ -214,7 +214,7 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
                             </Link>
 
                             <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-                                Album Controller
+                                Service Controller
                             </h1>
                             <Badge variant="outline" className="ml-auto sm:ml-0">
                                 <FormField
@@ -243,7 +243,7 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
                             <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
                                 <Card x-chunk="dashboard-07-chunk-0">
                                     <CardHeader>
-                                        <CardTitle>Album Details</CardTitle>
+                                        <CardTitle>Service Details</CardTitle>
                                         <CardDescription>
                                             Lipsum dolor sit amet, consectetur adipiscing elit
                                         </CardDescription>
@@ -277,7 +277,8 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
                                                         <FormItem>
                                                             <FormLabel>Description</FormLabel>
                                                             <FormControl>
-                                                                <Textarea placeholder="Album description" {...field} />
+                                                                <Textarea
+                                                                    placeholder="Service description" {...field} />
                                                             </FormControl>
                                                             <FormMessage/>
                                                         </FormItem>
@@ -291,7 +292,7 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
                                     className="overflow-hidden" x-chunk="dashboard-07-chunk-2"
                                 >
                                     <CardHeader>
-                                        <CardTitle>Album Background</CardTitle>
+                                        <CardTitle>Service Background</CardTitle>
                                         <CardDescription>
                                             Lipsum dolor sit amet, consectetur adipiscing elit
                                         </CardDescription>
@@ -299,13 +300,13 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
                                     <CardContent>
                                         <FormField control={form.control} name="background" render={({field}) => (
                                             <FormItem>
-                                                <FormLabel>Album Background</FormLabel>
+                                                <FormLabel>Service Background</FormLabel>
                                                 <FormControl>
                                                     <div className="grid gap-2">
                                                         {imagePreview ? (
                                                             <>
                                                                 <Image
-                                                                    alt="Album Background"
+                                                                    alt="Service Background"
                                                                     className="aspect-square w-full rounded-md object-cover"
                                                                     height={300}
                                                                     src={imagePreview}
@@ -419,7 +420,7 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
                                 </Card>
                                 <Card x-chunk="dashboard-07-chunk-5">
                                     <CardHeader>
-                                        <CardTitle>Archive Album</CardTitle>
+                                        <CardTitle>Archive Service</CardTitle>
                                         <CardDescription>
                                             Lipsum dolor sit amet, consectetur adipiscing elit.
                                         </CardDescription>
@@ -427,7 +428,7 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
                                     <CardContent>
                                         <div></div>
                                         <Button size="sm" variant="secondary">
-                                            Archive Album
+                                            Archive Service
                                         </Button>
                                     </CardContent>
                                 </Card>
@@ -437,7 +438,7 @@ export const AlbumForm: React.FC<AlbumFormProps> = ({
                             <Button variant="outline" size="sm">
                                 Discard
                             </Button>
-                            <Button size="sm">Save Album</Button>
+                            <Button size="sm">Save Service</Button>
                         </div>
                     </div>
                 </form>

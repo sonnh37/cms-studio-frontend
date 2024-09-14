@@ -1,16 +1,4 @@
-import {
-    ArrowDown,
-    ArrowRight,
-    ArrowUp,
-    Bug,
-    CheckCircle2,
-    Circle,
-    HelpCircle,
-    PackagePlus,
-    ScrollText,
-    Timer,
-    XCircle,
-} from "lucide-react";
+import {Bug, CheckCircle2, Circle, HelpCircle, PackagePlus, ScrollText, Timer, XCircle,} from "lucide-react";
 
 export const status_options = [
     {
@@ -59,6 +47,6 @@ export const label_options = [
 ];
 
 export const isDeleted_options = [
-    { label: "Active", value: "false" },
-    { label: "Deactivated", value: "true" },
+    {label: "Active", value: "false"},
+    {label: "Deactivated", value: "true"},
 ];
