@@ -2,13 +2,24 @@ import {CategoryGetAllQuery, OutfitGetAllQuery} from "@/types/queries/outfit-que
 import {Category, Outfit} from "@/types/outfit";
 import axios from "axios";
 
-export const fetchOutfits = async (query: OutfitGetAllQuery): Promise<PagedResponse<Outfit>> => {
+export const fetchOutfits = (query: OutfitGetAllQuery): Promise<PagedResponse<Outfit>> => {
     const params = new URLSearchParams(query as any).toString();
 
     return axios.get(`https://localhost:7192/outfits?${params}`)
         .then((response) => {
-            console.log("check_api", response);
             return response.data as PagedResponse<Outfit>;
+        })
+        .catch((error) => {
+            console.error('Failed to fetch outfits:', error);
+            throw error;
+        });
+};
+
+export const fetchOutfit = (id: string): Promise<ItemResponse<Outfit>> => {
+
+    return axios.get(`https://localhost:7192/outfits/${id}`)
+        .then((response) => {
+            return response.data as ItemResponse<Outfit>;
         })
         .catch((error) => {
             console.error('Failed to fetch outfits:', error);

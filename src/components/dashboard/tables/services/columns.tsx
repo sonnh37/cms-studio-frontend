@@ -58,6 +58,9 @@ export const columns: ColumnDef<Service>[] = [
         header: ({column}) => (
             <DataTableColumnHeader column={column} title="Description"/>
         ),
+        cell: ({row}) => {
+            return <div className="truncate max-w-xs">{row.getValue("description")}</div>
+        }
     },
     {
         accessorKey: "src",

@@ -11,6 +11,7 @@ import {
     PaginationState,
     SortingState,
     useReactTable,
+    VisibilityState,
 } from "@tanstack/react-table"
 
 import {keepPreviousData, useQuery,} from '@tanstack/react-query'
@@ -33,6 +34,8 @@ export function DataTable<TData, TValue>({
                                              stringObject
                                          }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
+    const [columnVisibility, setColumnVisibility] =
+        React.useState<VisibilityState>({})
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
     )
@@ -84,18 +87,20 @@ export function DataTable<TData, TValue>({
         data: data?.results ?? defaultData,
         columns,
         rowCount: data?.totalRecords ?? 0,
-        state: {
-            pagination,
-            sorting,
-            columnFilters
-        },
         onPaginationChange: (newPagination) => setPagination(newPagination),
         onSortingChange: (newSorting) => setSorting(newSorting),
         getCoreRowModel: getCoreRowModel(),
+        onColumnVisibilityChange: setColumnVisibility,
         manualPagination: true,
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
         debugTable: true,
+        state: {
+            pagination,
+            sorting,
+            columnFilters,
+            columnVisibility
+        },
     });
 
     if (isFetching) return <div><BarLoader/></div>;

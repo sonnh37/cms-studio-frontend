@@ -8,31 +8,31 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/c
 import {Photo} from '@/types/photo';
 import {PhotoGetAllQuery} from "@/types/queries/photo-query";
 import {fetchPhotos} from "@/services/photo-service";
-import {fetchAlbum} from "@/services/album-service";
-import {Album, AlbumXPhoto} from "@/types/album";
+import {fetchOutfit} from "@/services/outfit-service";
+import {Outfit, OutfitXPhoto} from "@/types/outfit";
 import {Breadcrumbs} from "@/components/user/breadcrumb";
 import {ContentLayout} from "@/components/dashboard/content-layout";
-import DataOnlyTablePhotos from "@/components/dashboard/tables/albums/photos";
+import DataOnlyTablePhotos from "@/components/dashboard/tables/outfits/photos";
 import {useRefresh} from "@/components/dashboard/refresh-context"; // Đảm bảo bạn đã định nghĩa kiểu Photo
 
-export default function Page({params}: { params: { albumId: string } }) {
-    const [photoInAlbums, setPhotoInAlbums] = useState<Photo[]>([]);
+export default function Page({params}: { params: { outfitId: string } }) {
+    const [photoInOutfits, setPhotoInOutfits] = useState<Photo[]>([]);
     const [photos, setPhotos] = useState<Photo[]>([]);
     const [photoRemains, setPhotoRemains] = useState<Photo[]>([]);
-    const [albumXPhotos, setAlbumXPhotos] = useState<AlbumXPhoto[] | undefined>(undefined);
+    const [outfitXPhotos, setOutfitXPhotos] = useState<OutfitXPhoto[] | undefined>(undefined);
 
     const [queryParams, setQueryParams] = useState<PhotoGetAllQuery>({isPagination: false});
     const {setRefresh} = useRefresh();
 
     const refresh = async () => {
         try {
-            const [albumResponse, photosResponse] = await Promise.all([
-                fetchAlbum(params.albumId),
+            const [outfitResponse, photosResponse] = await Promise.all([
+                fetchOutfit(params.outfitId),
                 fetchPhotos(queryParams),
             ]);
 
             setPhotos(photosResponse.results ?? []);
-            setAlbumXPhotos(albumResponse.result?.albumXPhotos);
+            setOutfitXPhotos(outfitResponse.result?.outfitXPhotos);
         } catch (error: any) {
             console.error('Failed to refresh data', error.response?.data || error.message);
         }
@@ -41,36 +41,36 @@ export default function Page({params}: { params: { albumId: string } }) {
     // refresh override in context
     useEffect(() => {
         setRefresh(() => refresh);
-    }, [setRefresh, params.albumId, queryParams]);
+    }, [setRefresh, params.outfitId, queryParams]);
 
     useEffect(() => {
         refresh();
-    }, [params.albumId, queryParams]);
+    }, [params.outfitId, queryParams]);
 
     useEffect(() => {
-        const photosInAlbum = albumXPhotos
-            ? albumXPhotos.map((x) => x.photo).filter((photo): photo is Photo => photo !== undefined)
+        const photosInOutfit = outfitXPhotos
+            ? outfitXPhotos.map((x) => x.photo).filter((photo): photo is Photo => photo !== undefined)
             : [];
 
-        setPhotoInAlbums(photosInAlbum);
-    }, [albumXPhotos]);
+        setPhotoInOutfits(photosInOutfit);
+    }, [outfitXPhotos]);
 
     useEffect(() => {
-        const remainingPhotos = photos.filter(photo => !photoInAlbums.some(albumPhoto => albumPhoto.id === photo.id));
+        const remainingPhotos = photos.filter(photo => !photoInOutfits.some(outfitPhoto => outfitPhoto.id === photo.id));
         setPhotoRemains(remainingPhotos);
-    }, [photos, photoInAlbums]);
+    }, [photos, photoInOutfits]);
 
     const handleDeletePhoto = async (photo: Photo) => {
-        const albumXPhotoCommand_: Partial<AlbumXPhoto> = {
-            albumId: params.albumId,
+        const outfitXPhotoCommand_: Partial<OutfitXPhoto> = {
+            outfitId: params.outfitId,
             photoId: photo.id
         }
         try {
-            const queryParams = new URLSearchParams(albumXPhotoCommand_ as any).toString();
+            const queryParams = new URLSearchParams(outfitXPhotoCommand_ as any).toString();
 
-            await axios.delete(`https://localhost:7192/albums/albumXPhotos?${queryParams}`);
-            const albumResponse = await fetchAlbum(params.albumId);
-            setAlbumXPhotos(albumResponse.result?.albumXPhotos);
+            await axios.delete(`https://localhost:7192/outfits/outfitXPhotos?${queryParams}`);
+            const outfitResponse = await fetchOutfit(params.outfitId);
+            setOutfitXPhotos(outfitResponse.result?.outfitXPhotos);
         } catch (error: any) {
             console.error('Failed to delete photo', error.response?.data || error.message);
         }
@@ -78,17 +78,17 @@ export default function Page({params}: { params: { albumId: string } }) {
 
     const breadcrumbItems = [
         {title: "Dashboard", link: "/dashboard"},
-        {title: "Album", link: "/dashboard/album"},
-        {title: `${params.albumId}`, link: `/dashboard/album/${params.albumId}`},
-        {title: `photos`, link: `/dashboard/album/${params.albumId}/photos`},
+        {title: "Outfit", link: "/dashboard/outfit"},
+        {title: `${params.outfitId}`, link: `/dashboard/outfit/${params.outfitId}`},
+        {title: `photos`, link: `/dashboard/outfit/${params.outfitId}/photos`},
     ];
 
     return (
-        <ContentLayout title="Album">
+        <ContentLayout title="Outfit">
             <div className="space-y-6">
                 <Breadcrumbs items={breadcrumbItems}/>
                 <div className="p-4">
-                    <h2 className="text-xl font-bold mb-4">Photos in Album</h2>
+                    <h2 className="text-xl font-bold mb-4">Photos in Outfit</h2>
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -99,7 +99,7 @@ export default function Page({params}: { params: { albumId: string } }) {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {photoInAlbums
+                            {photoInOutfits
 
                                 .map((photo) => (
                                     <TableRow key={photo.id}>
@@ -121,7 +121,7 @@ export default function Page({params}: { params: { albumId: string } }) {
                         </TableBody>
                     </Table>
                     <div className="mt-8">
-                        <h3 className="text-lg font-bold mb-2">Add Photos to Album</h3>
+                        <h3 className="text-lg font-bold mb-2">Add Photos to Outfit</h3>
                         <DataOnlyTablePhotos photos={photoRemains}/>
                     </div>
                 </div>

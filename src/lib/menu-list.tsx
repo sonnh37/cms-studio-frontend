@@ -68,6 +68,32 @@ export function getMenuList(pathname: string): Group[] {
                 },
                 {
                     href: "",
+                    label: "Outfits",
+                    active: pathname.includes(Constant.DASHBOARD_OUTFIT_URL),
+                    icon: () => (
+                        <Image
+                            src="/images/fashion-design.png"
+                            width={500}
+                            height={500}
+                            alt="Picture of the author"
+                            className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0"
+                        />
+                    ),
+                    submenus: [
+                        {
+                            href: Constant.DASHBOARD_OUTFIT_URL,
+                            label: "All Outfits",
+                            active: pathname === Constant.DASHBOARD_OUTFIT_URL,
+                        },
+                        {
+                            href: Constant.DASHBOARD_OUTFIT_NEW_URL,
+                            label: "New Outfit",
+                            active: pathname === Constant.DASHBOARD_OUTFIT_NEW_URL,
+                        },
+                    ],
+                },
+                {
+                    href: "",
                     label: "Photos",
                     active: pathname.includes(Constant.DASHBOARD_PHOTO_URL),
                     icon: () => (
@@ -103,32 +129,6 @@ export function getMenuList(pathname: string): Group[] {
                             href: Constant.DASHBOARD_SERVICE_NEW_URL,
                             label: "New Service",
                             active: pathname === Constant.DASHBOARD_SERVICE_NEW_URL,
-                        },
-                    ],
-                },
-                {
-                    href: "",
-                    label: "Outfits",
-                    active: pathname.includes(Constant.DASHBOARD_OUTFIT_URL),
-                    icon: () => (
-                        <Image
-                            src="/images/fashion-design.png"
-                            width={500}
-                            height={500}
-                            alt="Picture of the author"
-                            className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0"
-                        />
-                    ),
-                    submenus: [
-                        {
-                            href: Constant.DASHBOARD_OUTFIT_URL,
-                            label: "All Outfits",
-                            active: pathname === Constant.DASHBOARD_OUTFIT_URL,
-                        },
-                        {
-                            href: Constant.DASHBOARD_OUTFIT_NEW_URL,
-                            label: "New Outfit",
-                            active: pathname === Constant.DASHBOARD_OUTFIT_NEW_URL,
                         },
                     ],
                 },

@@ -58,8 +58,12 @@ export const columns: ColumnDef<Album>[] = [
         header: ({column}) => (
             <DataTableColumnHeader column={column} title="Description"/>
         ),
+        cell: ({row}) => {
+            return <div className="truncate max-w-xs">{row.getValue("description")}</div>
+        }
     },
     {
+
         accessorKey: "background",
         header: "Background Image",
         cell: ({row}) => {
@@ -76,6 +80,7 @@ export const columns: ColumnDef<Album>[] = [
                 </Link>
             );
         },
+        enableHiding: false,
     },
     {
         accessorKey: "createdDate",
