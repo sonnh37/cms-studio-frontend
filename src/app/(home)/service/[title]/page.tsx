@@ -2,11 +2,9 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Service} from "@/types/service";
-import {NavbarHeader} from "@/components/user/layouts/navbar";
 import {ContentState, convertFromRaw, EditorState} from "draft-js";
 import {Editor} from "react-draft-wysiwyg";
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import Footer from "@/components/user/layouts/footer";
 
 export default function Page({params}: { params: { title: string } }) {
     const [service, setService] = useState<Service | null>(null);
@@ -56,10 +54,9 @@ export default function Page({params}: { params: { title: string } }) {
 
     return (
         <>
-            <NavbarHeader/>
             {service && (
                 <div className="service-details">
-                    <h1>{service.title}</h1>
+                    <h1>{service.name}</h1>
                     {editorState && (
                         <div>
                             <Editor
@@ -72,7 +69,6 @@ export default function Page({params}: { params: { title: string } }) {
                     {/* Render other service details here */}
                 </div>
             )}
-            <Footer/>
         </>
     );
 }

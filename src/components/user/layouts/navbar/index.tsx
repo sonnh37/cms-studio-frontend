@@ -148,7 +148,7 @@ function Navbar({className}: { className?: string }) {
                 setAlbums(albums);
 
                 const fetchedServices = await fetchServices(serviceGetAllQuery);
-                setServices(fetchedServices);
+                setServices(fetchedServices.results!);
 
                 const fetchedCategories = await fetchCategories(categoryGetAllQuery);
                 setCategories(fetchedCategories);

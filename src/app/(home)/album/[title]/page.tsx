@@ -2,16 +2,23 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {FocusCards} from "@/components/ui/focus-cards";
-import {Album} from "@/types/album";
+import {Album, AlbumXPhoto} from "@/types/album";
 import {Photo} from "@/types/photo";
-import {NavbarHeader} from "@/components/user/layouts/navbar";
-import Footer from "@/components/user/layouts/footer";
+import {toSlug} from "@/lib/slug-helper";
+import {AlbumGetAllQuery} from "@/types/queries/album-query";
+import {fetchAlbums} from "@/services/album-service";
 
 export default function Page({params}: { params: { title: string } }) {
     const [cards, setCards] = useState<{ title: string; src: string }[]>([]);
     const [album, setAlbum] = useState<Album | null>(null);
     const [photos, setPhotos] = useState<Photo[]>([]);
+    const [albumXPhoto, setAlbumXPhoto] = useState<AlbumXPhoto[]>([]);
     const {title} = params;
+
+    const query: AlbumGetAllQuery = {
+        isPagination: true,
+        title: '',
+    }
 
     useEffect(() => {
         const fetchPhotos = async () => {
@@ -20,22 +27,23 @@ export default function Page({params}: { params: { title: string } }) {
                 return;
             }
             try {
-                const response = await axios.get("https://localhost:7192/albums", {
-                    params: {title},
-                });
+                query.title = title;
+                const response = await fetchAlbums(query);
 
-                if (
-                    response.data &&
-                    response.data.results &&
-                    response.data.results.length > 0
-                ) {
-                    const fetchedAlbum = response.data.results[0] as Album;
+                if (response && response.results && response.results.length > 0) {
+                    const fetchedAlbum = response.results[0] as Album;
                     setAlbum(fetchedAlbum);
+                    console.log("fetchedAlbum", fetchedAlbum)
+                    const fetchedAlbumXPhotos = fetchedAlbum.albumXPhotos || [];
+                    setAlbumXPhoto(fetchedAlbumXPhotos);
+                    console.log("fetchedAlbumXPhoto", fetchedAlbumXPhotos)
+                    const photosInAlbum = fetchedAlbumXPhotos
+                        ? fetchedAlbumXPhotos.map((x) => x.photo).filter((photo): photo is Photo => photo !== undefined)
+                        : [];
 
-                    const fetchedPhotos = fetchedAlbum.photos || [];
-                    setPhotos(fetchedPhotos);
-
-                    const formattedCards = fetchedPhotos.map((photo) => ({
+                    setPhotos(photosInAlbum);
+                    console.log("photoInAlbum", photosInAlbum)
+                    const formattedCards = photosInAlbum.map((photo) => ({
                         title: photo.title || "Untitled",
                         src: photo.src || "", // Handle cases where src might be missing
                     }));
@@ -53,10 +61,8 @@ export default function Page({params}: { params: { title: string } }) {
     }, [title]);
 
     return (
-        <>
-            <NavbarHeader/>
-            <FocusCards cards={cards}/>
-            <Footer/>
-        </>
+
+        <FocusCards cards={cards}/>
+
     );
 }

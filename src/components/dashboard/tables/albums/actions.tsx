@@ -28,7 +28,7 @@ const Actions: React.FC<ActionsProps> = ({id}) => {
     };
 
     const handleAlbumsClick = () => {
-        router.push(`/dashboard/album/${id}/albums`);
+        router.push(`/dashboard/album/${id}/photos`);
     };
 
     const handleDeleteClick = async () => {
@@ -73,7 +73,7 @@ const Actions: React.FC<ActionsProps> = ({id}) => {
                     Copy model ID
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleAlbumsClick}>
-                    View albums
+                    View photos
                 </DropdownMenuItem>
                 <DropdownMenuSeparator/>
                 <DropdownMenuItem onClick={handleEditClick}>
