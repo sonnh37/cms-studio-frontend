@@ -33,16 +33,13 @@ export default function Page({params}: { params: { title: string } }) {
                 if (response && response.results && response.results.length > 0) {
                     const fetchedAlbum = response.results[0] as Album;
                     setAlbum(fetchedAlbum);
-                    console.log("fetchedAlbum", fetchedAlbum)
                     const fetchedAlbumXPhotos = fetchedAlbum.albumXPhotos || [];
                     setAlbumXPhoto(fetchedAlbumXPhotos);
-                    console.log("fetchedAlbumXPhoto", fetchedAlbumXPhotos)
                     const photosInAlbum = fetchedAlbumXPhotos
                         ? fetchedAlbumXPhotos.map((x) => x.photo).filter((photo): photo is Photo => photo !== undefined)
                         : [];
 
                     setPhotos(photosInAlbum);
-                    console.log("photoInAlbum", photosInAlbum)
                     const formattedCards = photosInAlbum.map((photo) => ({
                         title: photo.title || "Untitled",
                         src: photo.src || "", // Handle cases where src might be missing

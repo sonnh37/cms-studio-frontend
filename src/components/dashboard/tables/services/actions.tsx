@@ -27,8 +27,8 @@ const Actions: React.FC<ActionsProps> = ({id}) => {
         router.push(`/dashboard/service/${id}`);
     };
 
-    const handleServicesClick = () => {
-        router.push(`/dashboard/service/${id}/services`);
+    const handleContentClick = () => {
+        router.push(`/dashboard/service/${id}/content`);
     };
 
     const handleDeleteClick = async () => {
@@ -72,8 +72,8 @@ const Actions: React.FC<ActionsProps> = ({id}) => {
                 >
                     Copy model ID
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleServicesClick}>
-                    View services
+                <DropdownMenuItem onClick={handleContentClick}>
+                    View content
                 </DropdownMenuItem>
                 <DropdownMenuSeparator/>
                 <DropdownMenuItem onClick={handleEditClick}>

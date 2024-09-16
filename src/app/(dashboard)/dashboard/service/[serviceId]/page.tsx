@@ -12,7 +12,7 @@ export default function Page({params}: { params: { serviceId: string } }) {
     // Fetch service data when params.serviceId changes
     useEffect(() => {
         if (params.serviceId) {
-            axios.get(`https://localhost:7192/service-management/services/${params.serviceId}`)
+            axios.get(`https://localhost:7192/services/${params.serviceId}`)
                 .then(response => {
                     setService(response.data.result);
                 })

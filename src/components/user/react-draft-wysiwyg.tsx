@@ -39,7 +39,7 @@ const RichEditor: React.FC<RichEditorProps> = ({service}) => {
         };
 
         // Optionally, update the service via API
-        axios.put(`https://localhost:7192/service-management/services`, updatedService)
+        axios.put(`https://localhost:7192/services`, updatedService)
             .then(() => {
                 Swal.fire({
                     title: 'Success!',

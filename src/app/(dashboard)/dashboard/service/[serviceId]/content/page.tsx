@@ -10,8 +10,9 @@ export default function Page({params}: { params: { serviceId: string } }) {
 
     useEffect(() => {
         if (params.serviceId) {
-            axios.get(`https://localhost:7192/service-management/services/${params.serviceId}`)
+            axios.get(`https://localhost:7192/services/${params.serviceId}`)
                 .then(response => {
+                    console.log("check",response.data.result);
                     setService(response.data.result);
                 })
                 .catch(err => {
