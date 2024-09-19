@@ -52,6 +52,7 @@ import {format} from "date-fns";
 import {AlbumGetAllQuery} from "@/types/queries/album-query";
 import {Textarea} from "@/components/ui/textarea";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {DataTableSkeleton} from "@/components/dashboard/data-table/data-table-skelete";
 
 const DATE_REQUIRED_ERROR = "Date is required.";
 const FormSchema = z.object({
@@ -164,7 +165,15 @@ export default function DataTableAlbums() {
         }
     }, [pagination]);
 
-    if (isFetching) return <div><BarLoader/></div>;
+    if (isFetching) return <div>
+        <DataTableSkeleton
+            columnCount={5}
+            searchableColumnCount={1}
+            filterableColumnCount={1}
+            cellWidths={["10rem", "40rem", "12rem", "12rem", "8rem"]}
+            shrinkZero
+        />
+    </div>;
     if (error) return <div>Error loading data</div>;
 
     const isFiltered = table.getState().columnFilters.length > 0
