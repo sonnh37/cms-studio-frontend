@@ -4,8 +4,8 @@ export interface BaseQueryableQuery {
     pageSize?: number;
     sortField?: string;
     sortOrder?: SortOrder;
-    fromDate?: Date;
-    toDate?: Date;
+    fromDate?: string;
+    toDate?: string;
     id?: string;
     createdBy?: string;
     lastUpdatedBy?: string;
