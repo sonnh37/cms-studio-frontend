@@ -79,9 +79,8 @@ export default function DataTableAlbums() {
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [pagination, setPagination] = React.useState<PaginationState>({pageIndex: 0, pageSize: 10});
     const queryClient = useQueryClient();
-    const [shouldFetch, setShouldFetch] = useState(true); // State để kiểm soát khi nào cần fetch dữ liệu
-    const [isSaveClicked, setIsSaveClicked] = useState(false); // Trạng thái mới để theo dõi việc nhấn Save changes
-    const [isSheetOpen, setIsSheetOpen] = useState(false); // State to track if sheet is open
+    const [shouldFetch, setShouldFetch] = useState(true);
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -155,9 +154,7 @@ export default function DataTableAlbums() {
         if (open) {
             setShouldFetch(false);
         } else {
-
             setShouldFetch(true);
-
         }
     };
 
@@ -175,9 +172,7 @@ export default function DataTableAlbums() {
     const stringObject = "Album";
 
     const handleClear = () => {
-
-        form.control._reset();
-
+        form.reset();
     }
     return (
         <div ref={scrollRef} className="space-y-4">
