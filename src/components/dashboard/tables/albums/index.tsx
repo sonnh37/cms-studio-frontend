@@ -82,6 +82,7 @@ export default function DataTableAlbums() {
     const queryClient = useQueryClient();
     const [shouldFetch, setShouldFetch] = useState(true);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
+    const [isClicked, setIsClicked] = useState(false);
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -131,6 +132,7 @@ export default function DataTableAlbums() {
     const handleFilterClick = () => {
         setIsSheetOpen(true);
         setShouldFetch(false);
+        setIsClicked(true);
     };
 
     const table = useReactTable({
@@ -153,8 +155,10 @@ export default function DataTableAlbums() {
     const handleSheetChange = (open: boolean) => {
         setIsSheetOpen(open);
         if (open) {
+            setIsClicked(false);
             setShouldFetch(false);
         } else {
+            setIsClicked(true);
             setShouldFetch(true);
         }
     };
@@ -165,7 +169,7 @@ export default function DataTableAlbums() {
         }
     }, [pagination]);
 
-    if (isFetching) return <div>
+    if (isFetching && !isClicked) return <div>
         <DataTableSkeleton
             columnCount={5}
             searchableColumnCount={1}
@@ -174,6 +178,10 @@ export default function DataTableAlbums() {
             shrinkZero
         />
     </div>;
+
+    // if (isFetching && isClicked) return <div>
+    //     <BarLoader/>
+    // </div>;
     if (error) return <div>Error loading data</div>;
 
     const isFiltered = table.getState().columnFilters.length > 0
