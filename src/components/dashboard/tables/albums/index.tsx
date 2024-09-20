@@ -83,6 +83,7 @@ export default function DataTableAlbums() {
     const [shouldFetch, setShouldFetch] = useState(true);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
+    const side = "left"
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -224,7 +225,7 @@ export default function DataTableAlbums() {
                 </div>
                 <div className="ml-auto flex items-center gap-2">
                     <div>
-                        <Sheet open={isSheetOpen} onOpenChange={handleSheetChange}>
+                        <Sheet key={side} open={isSheetOpen} onOpenChange={handleSheetChange}>
                             <SheetTrigger>
                                 <Button size="sm" variant="outline" className="h-8 gap-1" onClick={handleFilterClick}>
                                     <SlidersHorizontal className="h-3.5 w-3.5"/>
@@ -232,7 +233,7 @@ export default function DataTableAlbums() {
                                 </Button>
                             </SheetTrigger>
 
-                            <SheetContent>
+                            <SheetContent side={side}>
                                 <Form {...form}>
                                     <form className="space-y-8">
                                         <SheetHeader>
